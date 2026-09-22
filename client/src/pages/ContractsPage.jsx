@@ -1,0 +1,598 @@
+import React, { useState, useEffect } from "react";
+import { contractApi } from "../api/contractApi";
+import { employeeApi } from "../api/employeeApi";
+import { salaryStructureApi } from "../api/salaryStructureApi";
+import { scheduleApi } from "../api/scheduleApi";
+import { Badge } from "../components/common/Badge";
+import { Button } from "../components/common/Button";
+import { Modal } from "../components/common/Modal";
+import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
+
+export const ContractsPage = () => {
+  const [contracts, setContracts] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [structures, setStructures] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Modals
+  const [showModal, setShowModal] = useState(false);
+  const [editingContract, setEditingContract] = useState(null);
+  const [showLookupModal, setShowLookupModal] = useState(false);
+  const [lookupResult, setLookupResult] = useState(null);
+
+  // Forms
+  const [formData, setFormData] = useState({
+    name: "",
+    employee: "",
+    wage: "",
+    salaryStructure: "",
+    workingSchedule: "",
+    startDate: new Date().toISOString().split("T")[0],
+    endDate: "",
+    status: "Active",
+  });
+
+  const [lookupForm, setLookupForm] = useState({
+    employeeId: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  const { hasRole } = useAuth();
+  const { showToast } = useToast();
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [cRes, eRes, sRes, schRes] = await Promise.all([
+        contractApi.getAll(),
+        employeeApi.getAll(),
+        salaryStructureApi.getAll(),
+        scheduleApi.getAll(),
+      ]);
+
+      if (cRes.success) setContracts(cRes.data);
+      if (eRes.success) setEmployees(eRes.data);
+      if (sRes.success) setStructures(sRes.data);
+      if (schRes.success) setSchedules(schRes.data);
+    } catch (err) {
+      showToast("Failed to load contract registry", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleOpenModal = (contract = null) => {
+    setEditingContract(contract);
+    if (contract) {
+      setFormData({
+        name: contract.name || "",
+        employee: contract.employee?._id || contract.employee || "",
+        wage: contract.wage || "",
+        salaryStructure:
+          contract.salaryStructure?._id || contract.salaryStructure || "",
+        workingSchedule:
+          contract.workingSchedule?._id || contract.workingSchedule || "",
+        startDate: contract.startDate ? contract.startDate.split("T")[0] : "",
+        endDate: contract.endDate ? contract.endDate.split("T")[0] : "",
+        status: contract.state || contract.status || "Active",
+      });
+    } else {
+      const defaultEmp = employees[0]?._id || "";
+      const matchedEmp = employees.find((e) => e._id === defaultEmp);
+
+      setFormData({
+        name: `Contract - ${matchedEmp ? `${matchedEmp.firstName} ${matchedEmp.lastName}` : "Staff"}`,
+        employee: defaultEmp,
+        wage: matchedEmp?.wage || 65000,
+        salaryStructure: structures[0]?._id || "",
+        workingSchedule: schedules[0]?._id || "",
+        startDate: new Date().toISOString().split("T")[0],
+        endDate: "",
+        status: "Active",
+      });
+    }
+    setShowModal(true);
+  };
+
+  const handleEmployeeChange = (empId) => {
+    const emp = employees.find((e) => e._id === empId);
+    setFormData((prev) => ({
+      ...prev,
+      employee: empId,
+      name: emp ? `Contract - ${emp.firstName} ${emp.lastName}` : prev.name,
+      wage: emp?.wage || prev.wage,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        ...formData,
+        state: formData.status,
+      };
+      if (editingContract) {
+        const res = await contractApi.update(editingContract._id, payload);
+        if (res.success) {
+          showToast("Contract updated successfully", "success");
+          setShowModal(false);
+          fetchData();
+        }
+      } else {
+        const res = await contractApi.create(payload);
+        if (res.success) {
+          showToast("Contract registered successfully", "success");
+          setShowModal(false);
+          fetchData();
+        }
+      }
+    } catch (err) {
+      showToast(
+        err.response?.data?.message || "Contract saving failed",
+        "error",
+      );
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to remove this contract?"))
+      return;
+    try {
+      const res = await contractApi.delete(id);
+      if (res.success) {
+        showToast("Contract removed", "success");
+        fetchData();
+      }
+    } catch (err) {
+      showToast(err.response?.data?.message || "Delete failed", "error");
+    }
+  };
+
+  const handleLookup = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await contractApi.getApplicable(
+        lookupForm.employeeId,
+        lookupForm.startDate,
+        lookupForm.endDate,
+      );
+      setLookupResult(res.data);
+      if (!res.data) {
+        showToast(
+          "No active or historical contract covered this period",
+          "warning",
+        );
+      }
+    } catch (err) {
+      showToast(err.response?.data?.message || "Lookup failed", "error");
+    }
+  };
+
+  const canManage = hasRole("Admin", "HR Manager", "HR Payroll Manager");
+
+  return (
+    <div className="p-5 max-w-[1600px] w-full mx-auto flex flex-col gap-5 font-body">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E7E2D9]">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-mono text-xs text-[#0F5C4A] font-semibold">
+              Employment Registry
+            </span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-heading font-medium text-[#1C1B19]">
+            Contracts &amp; Wage Terms ({contracts.length})
+          </h1>
+          <p className="text-xs text-[#6B665C] mt-0.5">
+            Base wages, salary structure linkages, shift schedule mappings, and
+            historical terms.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => {
+              setLookupResult(null);
+              setLookupForm({
+                employeeId: employees[0]?._id || "",
+                startDate: "",
+                endDate: "",
+              });
+              setShowLookupModal(true);
+            }}
+            icon="search"
+          >
+            Period Tester
+          </Button>
+
+          {canManage && (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handleOpenModal(null)}
+              icon="add"
+            >
+              New Contract
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Contracts Table */}
+      <div className="tcpeople-table-container">
+        {loading ? (
+          <LoadingSpinner message="Querying active contracts..." />
+        ) : contracts.length === 0 ? (
+          <div className="p-10 text-center text-[#6B665C] text-xs">
+            No contract records found.
+          </div>
+        ) : (
+          <table className="tcpeople-table">
+            <thead>
+              <tr>
+                <th>Contract Reference</th>
+                <th>Employee</th>
+                <th className="text-right">Monthly Base Wage</th>
+                <th>Salary Structure</th>
+                <th>Validity Period</th>
+                <th>Status</th>
+                <th className="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contracts.map((c) => {
+                const empName = c.employee
+                  ? typeof c.employee === "object"
+                    ? `${c.employee.firstName || ""} ${c.employee.lastName || ""}`.trim()
+                    : "Employee"
+                  : "Employee";
+                const sDate = c.startDate
+                  ? new Date(c.startDate).toLocaleDateString()
+                  : "—";
+                const eDate = c.endDate
+                  ? new Date(c.endDate).toLocaleDateString()
+                  : "Indefinite";
+
+                return (
+                  <tr key={c._id}>
+                    <td>
+                      <div className="font-medium text-[#1C1B19]">{c.name}</div>
+                      <div className="text-[11px] font-mono text-[#6B665C]">
+                        ID: {c._id.slice(-6)}
+                      </div>
+                    </td>
+
+                    <td>
+                      <div className="font-medium text-[#1C1B19]">
+                        {empName}
+                      </div>
+                      <div className="text-[11px] font-mono text-[#6B665C]">
+                        {c.employee?.employeeCode || "—"}
+                      </div>
+                    </td>
+
+                    <td className="text-right font-mono font-bold text-xs text-[#8A6D3B]">
+                      ₹{Number(c.wage || 0).toLocaleString("en-IN")}
+                    </td>
+
+                    <td className="text-xs text-[#6B665C]">
+                      {c.salaryStructure?.name || "Standard"}
+                    </td>
+
+                    <td className="font-mono text-xs text-[#6B665C]">
+                      {sDate} → {eDate}
+                    </td>
+
+                    <td>
+                      <Badge
+                        variant={
+                          c.state === "Active"
+                            ? "success"
+                            : c.state === "Draft"
+                              ? "default"
+                              : "danger"
+                        }
+                      >
+                        {c.state || "Active"}
+                      </Badge>
+                    </td>
+
+                    <td className="text-right">
+                      {canManage && (
+                        <div className="inline-flex items-center gap-1">
+                          <button
+                            onClick={() => handleOpenModal(c)}
+                            className="p-1.5 hover:bg-[#FAF9F6] rounded-md text-[#6B665C] hover:text-[#1C1B19] transition-colors"
+                            title="Edit Contract"
+                          >
+                            <span className="material-symbols-outlined text-sm">
+                              edit
+                            </span>
+                          </button>
+                          <button
+                            onClick={() => handleDelete(c._id)}
+                            className="p-1.5 hover:bg-[#FDF1EE] rounded-md text-[#B5482E] transition-colors"
+                            title="Delete Contract"
+                          >
+                            <span className="material-symbols-outlined text-sm">
+                              delete
+                            </span>
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* Contract Modal */}
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={
+          editingContract ? "Edit Employment Contract" : "New Contract Record"
+        }
+        maxWidth="max-w-xl"
+      >
+        <form onSubmit={handleSubmit} className="space-y-3 text-xs">
+          <div>
+            <label className="tcpeople-label">Contract Reference Name *</label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              className="tcpeople-input"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="tcpeople-label">Employee *</label>
+              <select
+                value={formData.employee}
+                onChange={(e) => handleEmployeeChange(e.target.value)}
+                className="tcpeople-input"
+                required
+              >
+                {employees.map((e) => (
+                  <option key={e._id} value={e._id}>
+                    {e.firstName} {e.lastName} (
+                    {e.employeeId || e.jobPosition || "Staff"})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="tcpeople-label">Monthly Base Wage (₹) *</label>
+              <input
+                type="number"
+                required
+                min="0"
+                placeholder="e.g. 50000"
+                value={formData.wage}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    wage: e.target.value ? Number(e.target.value) : "",
+                  })
+                }
+                className="tcpeople-input font-mono font-bold text-[#8A6D3B]"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="tcpeople-label">Salary Structure *</label>
+              <select
+                value={formData.salaryStructure}
+                onChange={(e) =>
+                  setFormData({ ...formData, salaryStructure: e.target.value })
+                }
+                className="tcpeople-input"
+                required
+              >
+                {structures.map((s) => (
+                  <option key={s._id} value={s._id}>
+                    {s.name} ({s.code})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="tcpeople-label">Working Schedule</label>
+              <select
+                value={formData.workingSchedule}
+                onChange={(e) =>
+                  setFormData({ ...formData, workingSchedule: e.target.value })
+                }
+                className="tcpeople-input"
+              >
+                {schedules.map((s) => (
+                  <option key={s._id} value={s._id}>
+                    {s.name} ({s.weeklyHours}h/wk)
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="tcpeople-label">Start Date *</label>
+              <input
+                type="date"
+                required
+                value={formData.startDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, startDate: e.target.value })
+                }
+                className="tcpeople-input font-mono"
+              />
+            </div>
+            <div>
+              <label className="tcpeople-label">
+                End Date (Leave blank if ongoing)
+              </label>
+              <input
+                type="date"
+                value={formData.endDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, endDate: e.target.value })
+                }
+                className="tcpeople-input font-mono"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="tcpeople-label">Contract Status</label>
+            <select
+              value={formData.status}
+              onChange={(e) =>
+                setFormData({ ...formData, status: e.target.value })
+              }
+              className="tcpeople-input"
+            >
+              <option value="Active">Active</option>
+              <option value="Draft">Draft</option>
+              <option value="Expired">Expired</option>
+              <option value="Terminated">Terminated</option>
+            </select>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-3 border-t border-[#E7E2D9]">
+            <Button
+              variant="secondary"
+              type="button"
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              {editingContract ? "Save Changes" : "Create Contract"}
+            </Button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* Applicable Contract Lookup Tester Modal */}
+      <Modal
+        isOpen={showLookupModal}
+        onClose={() => setShowLookupModal(false)}
+        title="Period Contract Resolution Tester"
+        maxWidth="max-w-md"
+      >
+        <form onSubmit={handleLookup} className="space-y-3.5 text-xs">
+          <p className="text-[#6B665C] text-[11px] leading-relaxed">
+            Select an employee and enter any evaluation date range (pay cycle)
+            to verify which contract, wage, and structure applies.
+          </p>
+
+          <div>
+            <label className="tcpeople-label">Employee to Test</label>
+            <select
+              value={lookupForm.employeeId}
+              onChange={(e) => {
+                setLookupForm({ ...lookupForm, employeeId: e.target.value });
+                setLookupResult(null);
+              }}
+              className="tcpeople-input text-xs"
+              required
+            >
+              {employees.map((e) => (
+                <option key={e._id} value={e._id}>
+                  {e.firstName} {e.lastName} (
+                  {e.employeeId || e.jobPosition || "Staff"})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="tcpeople-label">Test Period Start</label>
+              <input
+                type="date"
+                required
+                value={lookupForm.startDate}
+                onChange={(e) =>
+                  setLookupForm({ ...lookupForm, startDate: e.target.value })
+                }
+                className="tcpeople-input font-mono"
+              />
+            </div>
+            <div>
+              <label className="tcpeople-label">Test Period End</label>
+              <input
+                type="date"
+                required
+                value={lookupForm.endDate}
+                onChange={(e) =>
+                  setLookupForm({ ...lookupForm, endDate: e.target.value })
+                }
+                className="tcpeople-input font-mono"
+              />
+            </div>
+          </div>
+
+          <Button
+            variant="primary"
+            type="submit"
+            className="w-full justify-center"
+          >
+            Test Contract Resolution
+          </Button>
+
+          {lookupResult && (
+            <div className="p-3 bg-[#FAF9F6] rounded-lg border border-[#0F5C4A]/30 space-y-1 mt-2">
+              <span className="text-xs text-[#0F5C4A] font-semibold flex items-center gap-1">
+                <span className="material-symbols-outlined text-sm">
+                  check_circle
+                </span>
+                Applicable Contract Resolved
+              </span>
+              <div className="font-semibold text-[#1C1B19]">
+                {lookupResult.name}
+              </div>
+              <div className="text-[#8A6D3B] font-mono font-medium">
+                Wage: ₹{Number(lookupResult.wage).toLocaleString("en-IN")}/mo
+              </div>
+              <div className="text-[#6B665C]">
+                Structure:{" "}
+                {lookupResult.salaryStructure?.name || "Standard Monthly"}
+              </div>
+              <div className="text-[11px] font-mono text-[#6B665C]">
+                Validity:{" "}
+                {lookupResult.startDate
+                  ? new Date(lookupResult.startDate).toLocaleDateString()
+                  : "—"}{" "}
+                to{" "}
+                {lookupResult.endDate
+                  ? new Date(lookupResult.endDate).toLocaleDateString()
+                  : "Indefinite (Active)"}
+              </div>
+            </div>
+          )}
+        </form>
+      </Modal>
+    </div>
+  );
+};
