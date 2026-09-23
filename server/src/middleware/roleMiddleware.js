@@ -1,4 +1,4 @@
-const { AppError } = require("./errorMiddleware");
+const { AppError } = require('./errorMiddleware')
 
 /**
  * Role-Based Access Control (RBAC) middleware.
@@ -8,26 +8,26 @@ const { AppError } = require("./errorMiddleware");
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
-      return next(new AppError("Unauthorized: User context not found.", 401));
+      return next(new AppError('Unauthorized: User context not found.', 401))
     }
 
-    if (req.user.role === "Admin") {
-      return next();
+    if (req.user.role === 'Admin') {
+      return next()
     }
 
     if (!roles.includes(req.user.role)) {
       return next(
         new AppError(
-          `Forbidden: Role '${req.user.role}' is not authorized to perform this action. Required roles: ${roles.join(", ")}`,
-          403,
-        ),
-      );
+          `Forbidden: Role '${req.user.role}' is not authorized to perform this action. Required roles: ${roles.join(', ')}`,
+          403
+        )
+      )
     }
 
-    next();
-  };
-};
+    next()
+  }
+}
 
 module.exports = {
-  authorizeRoles,
-};
+  authorizeRoles
+}

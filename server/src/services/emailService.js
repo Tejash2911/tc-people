@@ -1,9 +1,9 @@
-const { getTransporter } = require("../config/mailer");
-const config = require("../config/env");
-const Payslip = require("../models/Payslip");
-const Payrun = require("../models/Payrun");
-const { generatePayslipPDF } = require("./pdfService");
-const logger = require("../utils/logger");
+const { getTransporter } = require('../config/mailer')
+const config = require('../config/env')
+const Payslip = require('../models/Payslip')
+const Payrun = require('../models/Payrun')
+const { generatePayslipPDF } = require('./pdfService')
+const logger = require('../utils/logger')
 
 /**
  * Sends a single payslip via email with PDF attachment.
@@ -11,25 +11,25 @@ const logger = require("../utils/logger");
  * @param {string} payslipId
  * @returns {Promise<Object>}
  */
-const sendSinglePayslipEmail = async (payslipId) => {
-  const payslip = await Payslip.findById(payslipId).populate("employee");
+const sendSinglePayslipEmail = async payslipId => {
+  const payslip = await Payslip.findById(payslipId).populate('employee')
   if (!payslip) {
-    throw new Error("Payslip not found");
+    throw new Error('Payslip not found')
   }
 
-  const { employee, payrollPeriod } = payslip;
+  const { employee, payrollPeriod } = payslip
   if (!employee || !employee.email) {
-    payslip.emailStatus = "Failed";
-    payslip.emailError = "Employee email address missing";
-    await payslip.save();
-    return { success: false, error: "Employee email missing" };
+    payslip.emailStatus = 'Failed'
+    payslip.emailError = 'Employee email address missing'
+    await payslip.save()
+    return { success: false, error: 'Employee email missing' }
   }
 
   try {
-    const pdfBuffer = await generatePayslipPDF(payslip._id);
-    const transporter = await getTransporter();
+    const pdfBuffer = await generatePayslipPDF(payslip._id)
+    const transporter = await getTransporter()
 
-    const periodStr = `${new Date(payrollPeriod.start).toISOString().split("T")[0]} to ${new Date(payrollPeriod.end).toISOString().split("T")[0]}`;
+    const periodStr = `${new Date(payrollPeriod.start).toISOString().split('T')[0]} to ${new Date(payrollPeriod.end).toISOString().split('T')[0]}`
 
     const mailOptions = {
       from: `TC People HR & Payroll <${config.smtp.from}>`,
@@ -54,27 +54,27 @@ const sendSinglePayslipEmail = async (payslipId) => {
         {
           filename: `Payslip_${employee.employeeId}_${new Date(payrollPeriod.end).toISOString().slice(0, 7)}.pdf`,
           content: pdfBuffer,
-          contentType: "application/pdf",
-        },
-      ],
-    };
+          contentType: 'application/pdf'
+        }
+      ]
+    }
 
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions)
 
-    payslip.emailStatus = "Sent";
-    payslip.emailSentAt = new Date();
-    payslip.emailError = null;
-    await payslip.save();
+    payslip.emailStatus = 'Sent'
+    payslip.emailSentAt = new Date()
+    payslip.emailError = null
+    await payslip.save()
 
-    return { success: true, email: employee.email };
+    return { success: true, email: employee.email }
   } catch (error) {
-    logger.error(`Error sending email to ${employee.email}:`, error.message);
-    payslip.emailStatus = "Failed";
-    payslip.emailError = error.message;
-    await payslip.save();
-    return { success: false, error: error.message };
+    logger.error(`Error sending email to ${employee.email}:`, error.message)
+    payslip.emailStatus = 'Failed'
+    payslip.emailError = error.message
+    await payslip.save()
+    return { success: false, error: error.message }
   }
-};
+}
 
 /**
  * Bulk sends all payslips for a given Payrun.
@@ -82,40 +82,40 @@ const sendSinglePayslipEmail = async (payslipId) => {
  * @param {string} payrunId
  * @returns {Promise<Object>}
  */
-const bulkSendPayrunPayslips = async (payrunId) => {
-  const payrun = await Payrun.findById(payrunId);
+const bulkSendPayrunPayslips = async payrunId => {
+  const payrun = await Payrun.findById(payrunId)
   if (!payrun) {
-    throw new Error("Payrun not found");
+    throw new Error('Payrun not found')
   }
 
-  const payslips = await Payslip.find({ payrun: payrun._id });
+  const payslips = await Payslip.find({ payrun: payrun._id })
   const results = {
     total: payslips.length,
     sent: 0,
     failed: 0,
-    details: [],
-  };
+    details: []
+  }
 
   for (const slip of payslips) {
-    const res = await sendSinglePayslipEmail(slip._id);
+    const res = await sendSinglePayslipEmail(slip._id)
     if (res.success) {
-      results.sent += 1;
+      results.sent += 1
     } else {
-      results.failed += 1;
+      results.failed += 1
     }
-    results.details.push({ payslipId: slip._id, ...res });
+    results.details.push({ payslipId: slip._id, ...res })
   }
 
-  payrun.emailsSentAt = new Date();
-  if (payrun.status === "Paid") {
-    payrun.status = "PayslipsSent";
+  payrun.emailsSentAt = new Date()
+  if (payrun.status === 'Paid') {
+    payrun.status = 'PayslipsSent'
   }
-  await payrun.save();
+  await payrun.save()
 
-  return results;
-};
+  return results
+}
 
 module.exports = {
   sendSinglePayslipEmail,
-  bulkSendPayrunPayslips,
-};
+  bulkSendPayrunPayslips
+}

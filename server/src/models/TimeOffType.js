@@ -1,53 +1,53 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const timeOffTypeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Time off type name is required"],
+      required: [true, 'Time off type name is required'],
       trim: true,
-      unique: true,
+      unique: true
     },
     code: {
       type: String,
-      required: [true, "Time off type code is required"],
+      required: [true, 'Time off type code is required'],
       unique: true,
       uppercase: true,
-      trim: true,
+      trim: true
     },
     unit: {
       type: String,
-      enum: ["days", "hours"],
-      default: "days",
+      enum: ['days', 'hours'],
+      default: 'days'
     },
     allocationRequired: {
       type: Boolean,
-      default: true,
+      default: true
     },
     approvalRequired: {
       type: Boolean,
-      default: true,
+      default: true
     },
     isPaid: {
       type: Boolean,
-      default: true,
+      default: true
     },
     description: {
       type: String,
-      default: "",
+      default: ''
     },
     status: {
       type: String,
-      enum: ["Active", "Inactive"],
-      default: "Active",
-      index: true,
-    },
+      enum: ['Active', 'Inactive'],
+      default: 'Active',
+      index: true
+    }
   },
   {
-    timestamps: true,
-  },
-);
+    timestamps: true
+  }
+)
 
-const TimeOffType = mongoose.model("TimeOffType", timeOffTypeSchema);
+const TimeOffType = mongoose.model('TimeOffType', timeOffTypeSchema)
 
-module.exports = TimeOffType;
+module.exports = TimeOffType

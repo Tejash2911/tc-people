@@ -1,4 +1,4 @@
-const { compile } = require("mathjs");
+const { compile } = require('mathjs')
 
 /**
  * Safely evaluates a math formula using mathjs within a restricted variable scope.
@@ -8,26 +8,24 @@ const { compile } = require("mathjs");
  * @returns {number} evaluated result rounded to 2 decimal places
  */
 const evaluateFormula = (formula, scope = {}) => {
-  if (!formula || typeof formula !== "string") {
-    throw new Error("Invalid formula string provided");
+  if (!formula || typeof formula !== 'string') {
+    throw new Error('Invalid formula string provided')
   }
 
   try {
-    const compiled = compile(formula);
-    const result = compiled.evaluate(scope);
+    const compiled = compile(formula)
+    const result = compiled.evaluate(scope)
 
-    if (typeof result !== "number" || isNaN(result) || !isFinite(result)) {
-      throw new Error(
-        `Formula evaluation did not produce a valid finite number. Result: ${result}`,
-      );
+    if (typeof result !== 'number' || isNaN(result) || !isFinite(result)) {
+      throw new Error(`Formula evaluation did not produce a valid finite number. Result: ${result}`)
     }
 
-    return Math.round((result + Number.EPSILON) * 100) / 100;
+    return Math.round((result + Number.EPSILON) * 100) / 100
   } catch (err) {
-    throw new Error(`Error evaluating formula "${formula}": ${err.message}`);
+    throw new Error(`Error evaluating formula "${formula}": ${err.message}`)
   }
-};
+}
 
 module.exports = {
-  evaluateFormula,
-};
+  evaluateFormula
+}

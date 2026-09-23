@@ -1,11 +1,8 @@
-const Contract = require("../models/Contract");
-const {
-  getApplicableContract,
-  validateNoOverlappingContract,
-} = require("../services/contractService");
-const { successResponse } = require("../utils/apiResponse");
-const { AppError } = require("../middleware/errorMiddleware");
-const { ensureEmployeeForUser } = require("../services/employeeHelper");
+const Contract = require('../models/Contract')
+const { getApplicableContract, validateNoOverlappingContract } = require('../services/contractService')
+const { successResponse } = require('../utils/apiResponse')
+const { AppError } = require('../middleware/errorMiddleware')
+const { ensureEmployeeForUser } = require('../services/employeeHelper')
 
 /**
  * Get all contracts with filtering
@@ -13,35 +10,32 @@ const { ensureEmployeeForUser } = require("../services/employeeHelper");
  */
 const getContracts = async (req, res, next) => {
   try {
-    const { employee, status, department } = req.query;
+    const { employee, status, department } = req.query
 
-    const query = {};
-    if (req.user.role === "Employee") {
-      const emp = await ensureEmployeeForUser(req.user);
-      query.employee = emp ? emp._id : req.user.employee;
+    const query = {}
+    if (req.user.role === 'Employee') {
+      const emp = await ensureEmployeeForUser(req.user)
+      query.employee = emp ? emp._id : req.user.employee
     } else {
-      if (employee) query.employee = employee;
-      if (department) query.department = department;
+      if (employee) query.employee = employee
+      if (department) query.department = department
     }
-    if (status) query.status = status;
+    if (status) query.status = status
 
     const contracts = await Contract.find(query)
-      .populate(
-        "employee",
-        "firstName lastName email employeeId department jobPosition",
-      )
-      .populate("salaryStructure", "name code")
-      .populate("workingSchedule", "name totalWeeklyHours")
-      .sort({ startDate: -1 });
+      .populate('employee', 'firstName lastName email employeeId department jobPosition')
+      .populate('salaryStructure', 'name code')
+      .populate('workingSchedule', 'name totalWeeklyHours')
+      .sort({ startDate: -1 })
 
     return successResponse(res, {
       data: contracts,
-      message: "Contracts list",
-    });
+      message: 'Contracts list'
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 /**
  * Get contract by ID
@@ -49,24 +43,24 @@ const getContracts = async (req, res, next) => {
  */
 const getContractById = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
 
     const contract = await Contract.findById(id)
-      .populate("employee")
-      .populate("salaryStructure")
-      .populate("workingSchedule");
+      .populate('employee')
+      .populate('salaryStructure')
+      .populate('workingSchedule')
 
     if (!contract) {
-      return next(new AppError("Contract not found", 404));
+      return next(new AppError('Contract not found', 404))
     }
 
     return successResponse(res, {
-      data: contract,
-    });
+      data: contract
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 /**
  * Find applicable contract for an employee during a period
@@ -74,37 +68,32 @@ const getContractById = async (req, res, next) => {
  */
 const getApplicableContractForPeriod = async (req, res, next) => {
   try {
-    const { employeeId, startDate, endDate } = req.query;
+    const { employeeId, startDate, endDate } = req.query
 
     if (!employeeId || !startDate || !endDate) {
-      return next(
-        new AppError(
-          "employeeId, startDate, and endDate query parameters are required",
-          400,
-        ),
-      );
+      return next(new AppError('employeeId, startDate, and endDate query parameters are required', 400))
     }
 
     const contract = await getApplicableContract(employeeId, {
       start: startDate,
-      end: endDate,
-    });
+      end: endDate
+    })
 
     if (!contract) {
       return successResponse(res, {
         data: null,
-        message: "No applicable contract found for this employee and period",
-      });
+        message: 'No applicable contract found for this employee and period'
+      })
     }
 
     return successResponse(res, {
       data: contract,
-      message: "Applicable contract for period",
-    });
+      message: 'Applicable contract for period'
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 /**
  * Create contract
@@ -112,32 +101,32 @@ const getApplicableContractForPeriod = async (req, res, next) => {
  */
 const createContract = async (req, res, next) => {
   try {
-    const data = { ...req.body };
-    if (data.state && !data.status) data.status = data.state;
-    if (data.endDate === "") data.endDate = null;
-    if (data.workingSchedule === "") data.workingSchedule = null;
+    const data = { ...req.body }
+    if (data.state && !data.status) data.status = data.state
+    if (data.endDate === '') data.endDate = null
+    if (data.workingSchedule === '') data.workingSchedule = null
 
-    const { employee, startDate, endDate, status } = data;
+    const { employee, startDate, endDate, status } = data
 
-    if (status !== "Draft") {
-      await validateNoOverlappingContract(employee, startDate, endDate);
+    if (status !== 'Draft') {
+      await validateNoOverlappingContract(employee, startDate, endDate)
     }
 
-    const contract = await Contract.create(data);
+    const contract = await Contract.create(data)
     const populated = await Contract.findById(contract._id)
-      .populate("employee", "firstName lastName email employeeId")
-      .populate("salaryStructure", "name code")
-      .populate("workingSchedule", "name totalWeeklyHours");
+      .populate('employee', 'firstName lastName email employeeId')
+      .populate('salaryStructure', 'name code')
+      .populate('workingSchedule', 'name totalWeeklyHours')
 
     return successResponse(res, {
       status: 201,
-      message: "Contract created successfully",
-      data: populated,
-    });
+      message: 'Contract created successfully',
+      data: populated
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 /**
  * Update contract
@@ -145,50 +134,44 @@ const createContract = async (req, res, next) => {
  */
 const updateContract = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
 
-    const current = await Contract.findById(id);
+    const current = await Contract.findById(id)
     if (!current) {
-      return next(new AppError("Contract not found", 404));
+      return next(new AppError('Contract not found', 404))
     }
 
-    const data = { ...req.body };
-    if (data.state && !data.status) data.status = data.state;
-    if (data.endDate === "") data.endDate = null;
-    if (data.workingSchedule === "") data.workingSchedule = null;
+    const data = { ...req.body }
+    if (data.state && !data.status) data.status = data.state
+    if (data.endDate === '') data.endDate = null
+    if (data.workingSchedule === '') data.workingSchedule = null
 
-    const newStartDate = data.startDate || current.startDate;
-    const newEndDate =
-      data.endDate !== undefined ? data.endDate : current.endDate;
-    const newStatus = data.status || current.status;
+    const newStartDate = data.startDate || current.startDate
+    const newEndDate = data.endDate !== undefined ? data.endDate : current.endDate
+    const newStatus = data.status || current.status
 
-    if (newStatus !== "Draft") {
-      await validateNoOverlappingContract(
-        current.employee,
-        newStartDate,
-        newEndDate,
-        id,
-      );
+    if (newStatus !== 'Draft') {
+      await validateNoOverlappingContract(current.employee, newStartDate, newEndDate, id)
     }
 
     const contract = await Contract.findByIdAndUpdate(id, data, {
       new: true,
-      runValidators: true,
+      runValidators: true
     })
-      .populate("employee", "firstName lastName email employeeId")
-      .populate("salaryStructure", "name code")
-      .populate("workingSchedule", "name totalWeeklyHours");
+      .populate('employee', 'firstName lastName email employeeId')
+      .populate('salaryStructure', 'name code')
+      .populate('workingSchedule', 'name totalWeeklyHours')
 
     return successResponse(res, {
-      message: "Contract updated successfully",
-      data: contract,
-    });
+      message: 'Contract updated successfully',
+      data: contract
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
-const Payslip = require("../models/Payslip");
+const Payslip = require('../models/Payslip')
 
 /**
  * Delete contract
@@ -196,33 +179,33 @@ const Payslip = require("../models/Payslip");
  */
 const deleteContract = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
 
-    const contract = await Contract.findById(id);
+    const contract = await Contract.findById(id)
     if (!contract) {
-      return next(new AppError("Contract not found", 404));
+      return next(new AppError('Contract not found', 404))
     }
 
-    const linkedPayslip = await Payslip.findOne({ contract: id });
+    const linkedPayslip = await Payslip.findOne({ contract: id })
     if (linkedPayslip) {
       return next(
         new AppError(
-          "Cannot delete this contract because payslips have already been generated under it. To deactivate, please set status to Expired or Cancelled instead.",
-          400,
-        ),
-      );
+          'Cannot delete this contract because payslips have already been generated under it. To deactivate, please set status to Expired or Cancelled instead.',
+          400
+        )
+      )
     }
 
-    await Contract.findByIdAndDelete(id);
+    await Contract.findByIdAndDelete(id)
 
     return successResponse(res, {
-      message: "Contract deleted successfully",
-      data: { id },
-    });
+      message: 'Contract deleted successfully',
+      data: { id }
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 module.exports = {
   getContracts,
@@ -230,5 +213,5 @@ module.exports = {
   getApplicableContractForPeriod,
   createContract,
   updateContract,
-  deleteContract,
-};
+  deleteContract
+}

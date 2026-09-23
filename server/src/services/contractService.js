@@ -1,5 +1,5 @@
-const Contract = require("../models/Contract");
-const { AppError } = require("../middleware/errorMiddleware");
+const Contract = require('../models/Contract')
+const { AppError } = require('../middleware/errorMiddleware')
 
 /**
  * Finds the contract applicable to an employee during a given payroll period.
@@ -15,32 +15,29 @@ const { AppError } = require("../middleware/errorMiddleware");
  * @returns {Promise<Contract>}
  */
 const getApplicableContract = async (employeeId, payrollPeriod) => {
-  const pStart = new Date(payrollPeriod.start || payrollPeriod.periodStart);
-  const pEnd = new Date(payrollPeriod.end || payrollPeriod.periodEnd);
+  const pStart = new Date(payrollPeriod.start || payrollPeriod.periodStart)
+  const pEnd = new Date(payrollPeriod.end || payrollPeriod.periodEnd)
 
   if (isNaN(pStart.getTime()) || isNaN(pEnd.getTime())) {
-    throw new AppError(
-      "Invalid payroll period dates provided for contract lookup",
-      400,
-    );
+    throw new AppError('Invalid payroll period dates provided for contract lookup', 400)
   }
 
   // Find active or historical contracts that overlap the payroll period
   const query = {
     employee: employeeId,
-    status: { $in: ["Active", "Expired", "Draft"] },
+    status: { $in: ['Active', 'Expired', 'Draft'] },
     startDate: { $lte: pEnd },
-    $or: [{ endDate: null }, { endDate: { $gte: pStart } }],
-  };
+    $or: [{ endDate: null }, { endDate: { $gte: pStart } }]
+  }
 
   // Find matching contracts, sort by startDate descending to pick the most relevant applicable contract
   const contract = await Contract.findOne(query)
     .sort({ startDate: -1 })
-    .populate("salaryStructure")
-    .populate("workingSchedule");
+    .populate('salaryStructure')
+    .populate('workingSchedule')
 
-  return contract;
-};
+  return contract
+}
 
 /**
  * Validates that a new or updated contract does not conflict/overlap with an existing active contract
@@ -51,39 +48,34 @@ const getApplicableContract = async (employeeId, payrollPeriod) => {
  * @param {Date | string | null} endDate
  * @param {string | null} excludeContractId
  */
-const validateNoOverlappingContract = async (
-  employeeId,
-  startDate,
-  endDate,
-  excludeContractId = null,
-) => {
-  const sDate = new Date(startDate);
-  const eDate = endDate ? new Date(endDate) : null;
+const validateNoOverlappingContract = async (employeeId, startDate, endDate, excludeContractId = null) => {
+  const sDate = new Date(startDate)
+  const eDate = endDate ? new Date(endDate) : null
 
   const query = {
     employee: employeeId,
-    status: { $in: ["Active", "Draft"] },
-    ...(excludeContractId ? { _id: { $ne: excludeContractId } } : {}),
-  };
-
-  if (eDate) {
-    query.startDate = { $lte: eDate };
-    query.$or = [{ endDate: null }, { endDate: { $gte: sDate } }];
-  } else {
-    // Open-ended contract overlaps with anything ending after sDate or open-ended
-    query.$or = [{ endDate: null }, { endDate: { $gte: sDate } }];
+    status: { $in: ['Active', 'Draft'] },
+    ...(excludeContractId ? { _id: { $ne: excludeContractId } } : {})
   }
 
-  const overlapping = await Contract.findOne(query);
+  if (eDate) {
+    query.startDate = { $lte: eDate }
+    query.$or = [{ endDate: null }, { endDate: { $gte: sDate } }]
+  } else {
+    // Open-ended contract overlaps with anything ending after sDate or open-ended
+    query.$or = [{ endDate: null }, { endDate: { $gte: sDate } }]
+  }
+
+  const overlapping = await Contract.findOne(query)
   if (overlapping) {
     throw new AppError(
       `Concurrent active contract conflict detected. Contract '${overlapping.name}' already covers this timeframe.`,
-      400,
-    );
+      400
+    )
   }
-};
+}
 
 module.exports = {
   getApplicableContract,
-  validateNoOverlappingContract,
-};
+  validateNoOverlappingContract
+}

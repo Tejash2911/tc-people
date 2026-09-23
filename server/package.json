@@ -8,7 +8,9 @@
     "dev": "node --watch src/server.js",
     "seed": "node src/seed/seeder.js",
     "clean-db": "node src/seed/clearDb.js",
-    "test": "node ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --forceExit"
+    "test": "node ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --forceExit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "hr",
@@ -36,6 +38,7 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "mongodb-memory-server": "^9.2.0",
+    "prettier": "^3.9.9",
     "supertest": "^7.0.0"
   },
   "jest": {

@@ -1,45 +1,42 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const salaryStructureSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Salary Structure name is required"],
+      required: [true, 'Salary Structure name is required'],
       trim: true,
-      unique: true,
+      unique: true
     },
     code: {
       type: String,
-      required: [true, "Salary Structure code is required"],
+      required: [true, 'Salary Structure code is required'],
       unique: true,
       uppercase: true,
-      trim: true,
+      trim: true
     },
     description: {
       type: String,
-      default: "",
+      default: ''
     },
     rules: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "SalaryRule",
-        required: true,
-      },
+        ref: 'SalaryRule',
+        required: true
+      }
     ],
     active: {
       type: Boolean,
       default: true,
-      index: true,
-    },
+      index: true
+    }
   },
   {
-    timestamps: true,
-  },
-);
+    timestamps: true
+  }
+)
 
-const SalaryStructure = mongoose.model(
-  "SalaryStructure",
-  salaryStructureSchema,
-);
+const SalaryStructure = mongoose.model('SalaryStructure', salaryStructureSchema)
 
-module.exports = SalaryStructure;
+module.exports = SalaryStructure

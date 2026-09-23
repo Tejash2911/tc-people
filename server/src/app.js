@@ -1,26 +1,26 @@
-const express = require('express');
-const cors = require('cors');
-const { errorHandler, AppError } = require('./middleware/errorMiddleware');
+const express = require('express')
+const cors = require('cors')
+const { errorHandler, AppError } = require('./middleware/errorMiddleware')
 
 // Route imports
-const authRoutes = require('./routes/authRoutes');
-const employeeRoutes = require('./routes/employeeRoutes');
-const contractRoutes = require('./routes/contractRoutes');
-const scheduleRoutes = require('./routes/scheduleRoutes');
-const attendanceRoutes = require('./routes/attendanceRoutes');
-const timeOffRoutes = require('./routes/timeOffRoutes');
-const salaryStructureRoutes = require('./routes/salaryStructureRoutes');
-const salaryRuleRoutes = require('./routes/salaryRuleRoutes');
-const payrunRoutes = require('./routes/payrunRoutes');
-const payslipRoutes = require('./routes/payslipRoutes');
-const dashboardRoutes = require('./routes/dashboardRoutes');
+const authRoutes = require('./routes/authRoutes')
+const employeeRoutes = require('./routes/employeeRoutes')
+const contractRoutes = require('./routes/contractRoutes')
+const scheduleRoutes = require('./routes/scheduleRoutes')
+const attendanceRoutes = require('./routes/attendanceRoutes')
+const timeOffRoutes = require('./routes/timeOffRoutes')
+const salaryStructureRoutes = require('./routes/salaryStructureRoutes')
+const salaryRuleRoutes = require('./routes/salaryRuleRoutes')
+const payrunRoutes = require('./routes/payrunRoutes')
+const payslipRoutes = require('./routes/payslipRoutes')
+const dashboardRoutes = require('./routes/dashboardRoutes')
 
-const app = express();
+const app = express()
 
 // Middlewares
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // Root & Health Check Endpoints
 app.get('/', (req, res) => {
@@ -44,44 +44,44 @@ app.get('/', (req, res) => {
       payslips: '/api/payslips',
       dashboard: '/api/dashboard'
     }
-  });
-});
+  })
+})
 
 app.get('/api', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'Welcome to TC People - HR & Payroll REST API',
     status: 'online'
-  });
-});
+  })
+})
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'online',
     service: 'TC People – HR & Payroll API',
     timestamp: new Date().toISOString()
-  });
-});
+  })
+})
 
 // API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/employees', employeeRoutes);
-app.use('/api/contracts', contractRoutes);
-app.use('/api/schedules', scheduleRoutes);
-app.use('/api/attendance', attendanceRoutes);
-app.use('/api/time-off', timeOffRoutes);
-app.use('/api/salary-structures', salaryStructureRoutes);
-app.use('/api/salary-rules', salaryRuleRoutes);
-app.use('/api/payruns', payrunRoutes);
-app.use('/api/payslips', payslipRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/auth', authRoutes)
+app.use('/api/employees', employeeRoutes)
+app.use('/api/contracts', contractRoutes)
+app.use('/api/schedules', scheduleRoutes)
+app.use('/api/attendance', attendanceRoutes)
+app.use('/api/time-off', timeOffRoutes)
+app.use('/api/salary-structures', salaryStructureRoutes)
+app.use('/api/salary-rules', salaryRuleRoutes)
+app.use('/api/payruns', payrunRoutes)
+app.use('/api/payslips', payslipRoutes)
+app.use('/api/dashboard', dashboardRoutes)
 
 // 404 Handler
 app.all('*', (req, res, next) => {
-  next(new AppError(`Cannot find endpoint ${req.method} ${req.originalUrl} on this server`, 404));
-});
+  next(new AppError(`Cannot find endpoint ${req.method} ${req.originalUrl} on this server`, 404))
+})
 
 // Centralized Global Error Handler
-app.use(errorHandler);
+app.use(errorHandler)
 
-module.exports = app;
+module.exports = app

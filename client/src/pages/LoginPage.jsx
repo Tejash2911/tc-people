@@ -1,160 +1,141 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { Button } from "../components/common/Button";
-import { useToast } from "../context/ToastContext";
+import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { Button } from '../components/common/Button'
+import { useToast } from '../context/ToastContext'
 
 export const LoginPage = () => {
-  const [isRegister, setIsRegister] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState("Employee");
-  const [loading, setLoading] = useState(false);
+  const [isRegister, setIsRegister] = useState(false)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [role, setRole] = useState('Employee')
+  const [loading, setLoading] = useState(false)
 
-  const { login, register } = useAuth();
-  const { showToast } = useToast();
-  const navigate = useNavigate();
+  const { login, register } = useAuth()
+  const { showToast } = useToast()
+  const navigate = useNavigate()
 
   // Email format regex
-  const isValidEmail = (val) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
-  };
+  const isValidEmail = val => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim())
+  }
 
   // Password Security Criteria
-  const hasMinLength = password.length >= 8;
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasNumber = /[0-9]/.test(password);
-  const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+  const hasMinLength = password.length >= 8
+  const hasUpperCase = /[A-Z]/.test(password)
+  const hasLowerCase = /[a-z]/.test(password)
+  const hasNumber = /[0-9]/.test(password)
+  const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
 
-  const isPasswordSecure =
-    hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+  const isPasswordSecure = hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar
 
-  const passedCriteriaCount = [
-    hasMinLength,
-    hasUpperCase,
-    hasLowerCase,
-    hasNumber,
-    hasSpecialChar,
-  ].filter(Boolean).length;
+  const passedCriteriaCount = [hasMinLength, hasUpperCase, hasLowerCase, hasNumber, hasSpecialChar].filter(
+    Boolean
+  ).length
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    const cleanEmail = email.trim();
+  const handleLoginSubmit = async e => {
+    e.preventDefault()
+    const cleanEmail = email.trim()
 
     if (!cleanEmail) {
-      showToast("Please enter your email address", "error");
-      return;
+      showToast('Please enter your email address', 'error')
+      return
     }
 
     if (!isValidEmail(cleanEmail)) {
-      showToast(
-        "Please enter a valid email format (e.g. name@company.com)",
-        "error",
-      );
-      return;
+      showToast('Please enter a valid email format (e.g. name@company.com)', 'error')
+      return
     }
 
     if (!password) {
-      showToast("Please enter your password", "error");
-      return;
+      showToast('Please enter your password', 'error')
+      return
     }
 
-    setLoading(true);
-    const result = await login(cleanEmail.toLowerCase(), password);
-    setLoading(false);
+    setLoading(true)
+    const result = await login(cleanEmail.toLowerCase(), password)
+    setLoading(false)
     if (result.success) {
-      navigate("/");
+      navigate('/')
     }
-  };
+  }
 
-  const handleRegisterSubmit = async (e) => {
-    e.preventDefault();
-    const cleanName = name.trim();
-    const cleanEmail = email.trim();
+  const handleRegisterSubmit = async e => {
+    e.preventDefault()
+    const cleanName = name.trim()
+    const cleanEmail = email.trim()
 
     if (!cleanName) {
-      showToast("Please enter your full name", "error");
-      return;
+      showToast('Please enter your full name', 'error')
+      return
     }
 
     if (!cleanEmail || !isValidEmail(cleanEmail)) {
-      showToast("Please provide a valid corporate email address", "error");
-      return;
+      showToast('Please provide a valid corporate email address', 'error')
+      return
     }
 
     if (!isPasswordSecure) {
       showToast(
-        "Password must fulfill all security criteria (Uppercase, Lowercase, Number, Special Character, 8+ chars)",
-        "error",
-      );
-      return;
+        'Password must fulfill all security criteria (Uppercase, Lowercase, Number, Special Character, 8+ chars)',
+        'error'
+      )
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     const result = await register({
       name: cleanName,
       email: cleanEmail.toLowerCase(),
       password,
-      role,
-    });
-    setLoading(false);
+      role
+    })
+    setLoading(false)
     if (result.success) {
-      navigate("/");
+      navigate('/')
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-[#F7F5F1] text-[#1C1B19] flex flex-col justify-center items-center p-4 selection:bg-[#0F5C4A] selection:text-white font-body">
-      <div className="max-w-md w-full bg-white border border-[#E7E2D9] rounded-xl p-6 sm:p-8 flex flex-col gap-6 shadow-sm">
+    <div className='min-h-screen bg-[#F7F5F1] text-[#1C1B19] flex flex-col justify-center items-center p-4 selection:bg-[#0F5C4A] selection:text-white font-body'>
+      <div className='max-w-md w-full bg-white border border-[#E7E2D9] rounded-xl p-6 sm:p-8 flex flex-col gap-6 shadow-sm'>
         {/* Brand Header */}
-        <div className="flex flex-col items-center text-center gap-1.5">
-          <Link
-            to="/landing"
-            className="flex flex-col items-center gap-2 group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#0F5C4A] flex items-center justify-center text-white font-bold text-xl transition-transform shadow-sm">
+        <div className='flex flex-col items-center text-center gap-1.5'>
+          <Link to='/landing' className='flex flex-col items-center gap-2 group'>
+            <div className='w-10 h-10 rounded-lg bg-[#0F5C4A] flex items-center justify-center text-white font-bold text-xl transition-transform shadow-sm'>
               TC
             </div>
-            <span className="text-xl font-heading font-bold text-[#1C1B19]">
-              TC People
-            </span>
+            <span className='text-xl font-heading font-bold text-[#1C1B19]'>TC People</span>
           </Link>
-          <p className="text-xs text-[#6B665C]">
-            {isRegister
-              ? "Create secure organization account"
-              : "Sign in to access your payroll portal"}
+          <p className='text-xs text-[#6B665C]'>
+            {isRegister ? 'Create secure organization account' : 'Sign in to access your payroll portal'}
           </p>
         </div>
 
         {/* Tab Toggle: Sign In vs Register */}
-        <div className="flex bg-[#FAF9F6] p-1 rounded-lg border border-[#E7E2D9]">
+        <div className='flex bg-[#FAF9F6] p-1 rounded-lg border border-[#E7E2D9]'>
           <button
-            type="button"
+            type='button'
             onClick={() => {
-              setIsRegister(false);
-              setPassword("");
+              setIsRegister(false)
+              setPassword('')
             }}
             className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${
-              !isRegister
-                ? "bg-white text-[#1C1B19] shadow-sm font-semibold"
-                : "text-[#6B665C] hover:text-[#1C1B19]"
+              !isRegister ? 'bg-white text-[#1C1B19] shadow-sm font-semibold' : 'text-[#6B665C] hover:text-[#1C1B19]'
             }`}
           >
             Sign In
           </button>
           <button
-            type="button"
+            type='button'
             onClick={() => {
-              setIsRegister(true);
-              setPassword("");
+              setIsRegister(true)
+              setPassword('')
             }}
             className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${
-              isRegister
-                ? "bg-white text-[#1C1B19] shadow-sm font-semibold"
-                : "text-[#6B665C] hover:text-[#1C1B19]"
+              isRegister ? 'bg-white text-[#1C1B19] shadow-sm font-semibold' : 'text-[#6B665C] hover:text-[#1C1B19]'
             }`}
           >
             Register Account
@@ -163,219 +144,190 @@ export const LoginPage = () => {
 
         {!isRegister ? (
           /* Sign In Form */
-          <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleLoginSubmit} className='flex flex-col gap-4'>
             <div>
-              <label className="tcpeople-label">Corporate Email Address</label>
-              <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-base text-[#6B665C] pointer-events-none flex items-center justify-center">
+              <label className='tcpeople-label'>Corporate Email Address</label>
+              <div className='relative flex items-center'>
+                <span className='material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-base text-[#6B665C] pointer-events-none flex items-center justify-center'>
                   mail
                 </span>
                 <input
-                  type="email"
+                  type='email'
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="tcpeople-input font-mono text-xs !pl-10"
-                  placeholder="admin@tcpeople.com"
-                  autoComplete="email"
+                  onChange={e => setEmail(e.target.value)}
+                  className='tcpeople-input font-mono text-xs !pl-10'
+                  placeholder='admin@tcpeople.com'
+                  autoComplete='email'
                 />
               </div>
               {email && !isValidEmail(email) && (
-                <p className="text-[11px] text-[#B5482E] mt-1 font-mono">
-                  Please enter a valid email format
-                </p>
+                <p className='text-[11px] text-[#B5482E] mt-1 font-mono'>Please enter a valid email format</p>
               )}
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label className="tcpeople-label">Password</label>
+              <div className='flex items-center justify-between'>
+                <label className='tcpeople-label'>Password</label>
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-xs text-[#0F5C4A] hover:underline mb-1"
+                  className='text-xs text-[#0F5C4A] hover:underline mb-1'
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
-              <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-base text-[#6B665C] pointer-events-none flex items-center justify-center">
+              <div className='relative flex items-center'>
+                <span className='material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-base text-[#6B665C] pointer-events-none flex items-center justify-center'>
                   lock
                 </span>
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="tcpeople-input font-mono text-xs !pl-10 !pr-10"
-                  placeholder="Enter your password..."
-                  autoComplete="current-password"
+                  onChange={e => setPassword(e.target.value)}
+                  className='tcpeople-input font-mono text-xs !pl-10 !pr-10'
+                  placeholder='Enter your password...'
+                  autoComplete='current-password'
                 />
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B665C] hover:text-[#1C1B19] transition-colors flex items-center justify-center p-0.5"
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-[#6B665C] hover:text-[#1C1B19] transition-colors flex items-center justify-center p-0.5'
                 >
-                  <span className="material-symbols-outlined text-base">
-                    {showPassword ? "visibility_off" : "visibility"}
+                  <span className='material-symbols-outlined text-base'>
+                    {showPassword ? 'visibility_off' : 'visibility'}
                   </span>
                 </button>
               </div>
             </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              loading={loading}
-              className="w-full mt-2 font-medium"
-            >
+            <Button type='submit' variant='primary' loading={loading} className='w-full mt-2 font-medium'>
               Sign In to Platform
             </Button>
           </form>
         ) : (
           /* Register Form */
-          <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleRegisterSubmit} className='flex flex-col gap-4'>
             <div>
-              <label className="tcpeople-label">Full Name</label>
+              <label className='tcpeople-label'>Full Name</label>
               <input
-                type="text"
+                type='text'
                 required
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="tcpeople-input text-xs"
-                placeholder="e.g. Rajesh Sharma"
+                onChange={e => setName(e.target.value)}
+                className='tcpeople-input text-xs'
+                placeholder='e.g. Rajesh Sharma'
               />
             </div>
 
             <div>
-              <label className="tcpeople-label">Official Email Address</label>
+              <label className='tcpeople-label'>Official Email Address</label>
               <input
-                type="email"
+                type='email'
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="tcpeople-input font-mono text-xs"
-                placeholder="rajesh@company.com"
-                autoComplete="email"
+                onChange={e => setEmail(e.target.value)}
+                className='tcpeople-input font-mono text-xs'
+                placeholder='rajesh@company.com'
+                autoComplete='email'
               />
               {email && !isValidEmail(email) && (
-                <p className="text-[11px] text-[#B5482E] mt-1 font-mono">
-                  Must be a valid corporate email format
-                </p>
+                <p className='text-[11px] text-[#B5482E] mt-1 font-mono'>Must be a valid corporate email format</p>
               )}
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label className="tcpeople-label">Create Secure Password</label>
+              <div className='flex items-center justify-between'>
+                <label className='tcpeople-label'>Create Secure Password</label>
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-xs text-[#0F5C4A] hover:underline mb-1"
+                  className='text-xs text-[#0F5C4A] hover:underline mb-1'
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
-              <div className="relative flex items-center">
+              <div className='relative flex items-center'>
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="tcpeople-input font-mono text-xs !pr-10"
-                  placeholder="Min 8 chars with Upper, Lower, Number & Symbol"
-                  autoComplete="new-password"
+                  onChange={e => setPassword(e.target.value)}
+                  className='tcpeople-input font-mono text-xs !pr-10'
+                  placeholder='Min 8 chars with Upper, Lower, Number & Symbol'
+                  autoComplete='new-password'
                 />
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B665C] hover:text-[#1C1B19] transition-colors flex items-center justify-center p-0.5"
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-[#6B665C] hover:text-[#1C1B19] transition-colors flex items-center justify-center p-0.5'
                 >
-                  <span className="material-symbols-outlined text-base">
-                    {showPassword ? "visibility_off" : "visibility"}
+                  <span className='material-symbols-outlined text-base'>
+                    {showPassword ? 'visibility_off' : 'visibility'}
                   </span>
                 </button>
               </div>
 
               {/* Password Strength Checklist & Bar */}
               {password && (
-                <div className="mt-2.5 p-2.5 bg-[#FAF9F6] border border-[#E7E2D9] rounded-md space-y-2">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="text-[#6B665C]">Security Strength:</span>
+                <div className='mt-2.5 p-2.5 bg-[#FAF9F6] border border-[#E7E2D9] rounded-md space-y-2'>
+                  <div className='flex items-center justify-between text-xs font-mono'>
+                    <span className='text-[#6B665C]'>Security Strength:</span>
                     <span
                       className={`font-semibold ${
                         passedCriteriaCount === 5
-                          ? "text-[#0F5C4A]"
+                          ? 'text-[#0F5C4A]'
                           : passedCriteriaCount >= 3
-                            ? "text-[#8A6D3B]"
-                            : "text-[#B5482E]"
+                            ? 'text-[#8A6D3B]'
+                            : 'text-[#B5482E]'
                       }`}
                     >
-                      {passedCriteriaCount === 5
-                        ? "Strong"
-                        : passedCriteriaCount >= 3
-                          ? "Medium"
-                          : "Weak"}
+                      {passedCriteriaCount === 5 ? 'Strong' : passedCriteriaCount >= 3 ? 'Medium' : 'Weak'}
                     </span>
                   </div>
 
                   {/* Visual Bar */}
-                  <div className="w-full h-1 bg-[#E7E2D9] rounded-full overflow-hidden flex gap-1">
-                    {[1, 2, 3, 4, 5].map((i) => (
+                  <div className='w-full h-1 bg-[#E7E2D9] rounded-full overflow-hidden flex gap-1'>
+                    {[1, 2, 3, 4, 5].map(i => (
                       <div
                         key={i}
                         className={`flex-1 h-full transition-colors ${
                           i <= passedCriteriaCount
                             ? passedCriteriaCount === 5
-                              ? "bg-[#0F5C4A]"
+                              ? 'bg-[#0F5C4A]'
                               : passedCriteriaCount >= 3
-                                ? "bg-[#8A6D3B]"
-                                : "bg-[#B5482E]"
-                            : "bg-transparent"
+                                ? 'bg-[#8A6D3B]'
+                                : 'bg-[#B5482E]'
+                            : 'bg-transparent'
                         }`}
                       />
                     ))}
                   </div>
 
                   {/* Criteria Checklist */}
-                  <div className="grid grid-cols-2 gap-1 text-[11px] font-mono pt-1">
-                    <span
-                      className={`flex items-center gap-1 ${hasMinLength ? "text-[#0F5C4A]" : "text-[#918C82]"}`}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">
-                        {hasMinLength ? "check" : "close"}
-                      </span>
+                  <div className='grid grid-cols-2 gap-1 text-[11px] font-mono pt-1'>
+                    <span className={`flex items-center gap-1 ${hasMinLength ? 'text-[#0F5C4A]' : 'text-[#918C82]'}`}>
+                      <span className='material-symbols-outlined text-[14px]'>{hasMinLength ? 'check' : 'close'}</span>
                       8+ Characters
                     </span>
-                    <span
-                      className={`flex items-center gap-1 ${hasUpperCase ? "text-[#0F5C4A]" : "text-[#918C82]"}`}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">
-                        {hasUpperCase ? "check" : "close"}
-                      </span>
+                    <span className={`flex items-center gap-1 ${hasUpperCase ? 'text-[#0F5C4A]' : 'text-[#918C82]'}`}>
+                      <span className='material-symbols-outlined text-[14px]'>{hasUpperCase ? 'check' : 'close'}</span>
                       Uppercase (A-Z)
                     </span>
-                    <span
-                      className={`flex items-center gap-1 ${hasLowerCase ? "text-[#0F5C4A]" : "text-[#918C82]"}`}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">
-                        {hasLowerCase ? "check" : "close"}
-                      </span>
+                    <span className={`flex items-center gap-1 ${hasLowerCase ? 'text-[#0F5C4A]' : 'text-[#918C82]'}`}>
+                      <span className='material-symbols-outlined text-[14px]'>{hasLowerCase ? 'check' : 'close'}</span>
                       Lowercase (a-z)
                     </span>
-                    <span
-                      className={`flex items-center gap-1 ${hasNumber ? "text-[#0F5C4A]" : "text-[#918C82]"}`}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">
-                        {hasNumber ? "check" : "close"}
-                      </span>
+                    <span className={`flex items-center gap-1 ${hasNumber ? 'text-[#0F5C4A]' : 'text-[#918C82]'}`}>
+                      <span className='material-symbols-outlined text-[14px]'>{hasNumber ? 'check' : 'close'}</span>
                       Number (0-9)
                     </span>
                     <span
-                      className={`col-span-2 flex items-center gap-1 ${hasSpecialChar ? "text-[#0F5C4A]" : "text-[#918C82]"}`}
+                      className={`col-span-2 flex items-center gap-1 ${hasSpecialChar ? 'text-[#0F5C4A]' : 'text-[#918C82]'}`}
                     >
-                      <span className="material-symbols-outlined text-[14px]">
-                        {hasSpecialChar ? "check" : "close"}
+                      <span className='material-symbols-outlined text-[14px]'>
+                        {hasSpecialChar ? 'check' : 'close'}
                       </span>
                       Special Symbol (!@#$%^&*)
                     </span>
@@ -385,37 +337,22 @@ export const LoginPage = () => {
             </div>
 
             <div>
-              <label className="tcpeople-label">System Role Access</label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="tcpeople-input text-xs"
-              >
-                <option value="Employee">Employee (Self-Service Hub)</option>
-                <option value="HR Manager">
-                  HR Manager (Ops &amp; Employees)
-                </option>
-                <option value="HR Payroll User">
-                  HR Payroll User (Compute Payruns)
-                </option>
-                <option value="HR Payroll Manager">
-                  HR Payroll Manager (Lock &amp; Disburse)
-                </option>
-                <option value="Admin">Admin (Full System Access)</option>
+              <label className='tcpeople-label'>System Role Access</label>
+              <select value={role} onChange={e => setRole(e.target.value)} className='tcpeople-input text-xs'>
+                <option value='Employee'>Employee (Self-Service Hub)</option>
+                <option value='HR Manager'>HR Manager (Ops &amp; Employees)</option>
+                <option value='HR Payroll User'>HR Payroll User (Compute Payruns)</option>
+                <option value='HR Payroll Manager'>HR Payroll Manager (Lock &amp; Disburse)</option>
+                <option value='Admin'>Admin (Full System Access)</option>
               </select>
             </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              loading={loading}
-              className="w-full mt-2 font-medium"
-            >
+            <Button type='submit' variant='primary' loading={loading} className='w-full mt-2 font-medium'>
               Create Account &amp; Log In
             </Button>
           </form>
         )}
       </div>
     </div>
-  );
-};
+  )
+}

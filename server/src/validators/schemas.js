@@ -1,9 +1,9 @@
-const Joi = require('joi');
+const Joi = require('joi')
 
-const objectIdRegex = /^[0-9a-fA-F]{24}$/;
-const customObjectId = Joi.string().pattern(objectIdRegex).message('Invalid ObjectId format');
+const objectIdRegex = /^[0-9a-fA-F]{24}$/
+const customObjectId = Joi.string().pattern(objectIdRegex).message('Invalid ObjectId format')
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/
 
 const schemas = {
   // Auth
@@ -13,16 +13,14 @@ const schemas = {
       'string.email': 'Please provide a valid corporate email address',
       'string.empty': 'Email address cannot be empty'
     }),
-    password: Joi.string()
-      .min(8)
-      .max(128)
-      .pattern(passwordRegex)
-      .required()
-      .messages({
-        'string.min': 'Password must be at least 8 characters long',
-        'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*)'
-      }),
-    role: Joi.string().valid('Employee', 'HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin').default('Employee'),
+    password: Joi.string().min(8).max(128).pattern(passwordRegex).required().messages({
+      'string.min': 'Password must be at least 8 characters long',
+      'string.pattern.base':
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*)'
+    }),
+    role: Joi.string()
+      .valid('Employee', 'HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin')
+      .default('Employee'),
     employee: customObjectId.optional().allow(null)
   }),
 
@@ -129,29 +127,47 @@ const schemas = {
   createSchedule: Joi.object({
     name: Joi.string().trim().required(),
     description: Joi.string().allow('', null).optional(),
-    days: Joi.array().items(
-      Joi.object({
-        day: Joi.string().valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday').required(),
-        isWorkingDay: Joi.boolean().default(true),
-        startTime: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required(),
-        endTime: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required(),
-        breakMinutes: Joi.number().min(0).max(300).default(0)
-      })
-    ).min(1).required()
+    days: Joi.array()
+      .items(
+        Joi.object({
+          day: Joi.string()
+            .valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+            .required(),
+          isWorkingDay: Joi.boolean().default(true),
+          startTime: Joi.string()
+            .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
+            .required(),
+          endTime: Joi.string()
+            .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
+            .required(),
+          breakMinutes: Joi.number().min(0).max(300).default(0)
+        })
+      )
+      .min(1)
+      .required()
   }),
 
   updateSchedule: Joi.object({
     name: Joi.string().trim().optional(),
     description: Joi.string().allow('', null).optional(),
-    days: Joi.array().items(
-      Joi.object({
-        day: Joi.string().valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday').required(),
-        isWorkingDay: Joi.boolean().default(true),
-        startTime: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required(),
-        endTime: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required(),
-        breakMinutes: Joi.number().min(0).max(300).default(0)
-      })
-    ).min(1).optional()
+    days: Joi.array()
+      .items(
+        Joi.object({
+          day: Joi.string()
+            .valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+            .required(),
+          isWorkingDay: Joi.boolean().default(true),
+          startTime: Joi.string()
+            .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
+            .required(),
+          endTime: Joi.string()
+            .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
+            .required(),
+          breakMinutes: Joi.number().min(0).max(300).default(0)
+        })
+      )
+      .min(1)
+      .optional()
   }),
 
   // Attendance
@@ -240,7 +256,10 @@ const schemas = {
     calculationType: Joi.string().valid('Fixed', 'Percentage', 'Formula').required(),
     fixedAmount: Joi.number().min(0).when('calculationType', { is: 'Fixed', then: Joi.required() }),
     percentage: Joi.number().min(0).max(100).when('calculationType', { is: 'Percentage', then: Joi.required() }),
-    percentageBaseRuleCode: Joi.string().trim().uppercase().when('calculationType', { is: 'Percentage', then: Joi.optional() }),
+    percentageBaseRuleCode: Joi.string()
+      .trim()
+      .uppercase()
+      .when('calculationType', { is: 'Percentage', then: Joi.optional() }),
     formula: Joi.string().trim().when('calculationType', { is: 'Formula', then: Joi.required() }),
     description: Joi.string().allow('', null).optional(),
     active: Joi.boolean().default(true)
@@ -290,9 +309,9 @@ const schemas = {
     name: Joi.string().trim().optional(),
     selectedEmployees: Joi.array().items(customObjectId).min(1).optional()
   })
-};
+}
 
 module.exports = {
   schemas,
   customObjectId
-};
+}

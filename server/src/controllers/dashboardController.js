@@ -1,5 +1,5 @@
-const { getPayrollDashboardMetrics } = require("../services/dashboardService");
-const { successResponse } = require("../utils/apiResponse");
+const { getPayrollDashboardMetrics } = require('../services/dashboardService')
+const { successResponse } = require('../utils/apiResponse')
 
 /**
  * Get aggregated live payroll and HR dashboard analytics
@@ -7,30 +7,24 @@ const { successResponse } = require("../utils/apiResponse");
  */
 const getDashboardMetrics = async (req, res, next) => {
   try {
-    const {
-      periodStart,
-      periodEnd,
-      department,
-      employeeType,
-      attendancePeriod,
-    } = req.query;
+    const { periodStart, periodEnd, department, employeeType, attendancePeriod } = req.query
 
     const metrics = await getPayrollDashboardMetrics({
       periodStart,
       periodEnd,
       department,
       employeeType,
-      attendancePeriod,
-    });
+      attendancePeriod
+    })
 
     return successResponse(res, {
-      message: "Dashboard metrics calculated from live database data",
-      data: metrics,
-    });
+      message: 'Dashboard metrics calculated from live database data',
+      data: metrics
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 /**
  * Get dedicated attendance overview KPI aggregation
@@ -38,35 +32,29 @@ const getDashboardMetrics = async (req, res, next) => {
  */
 const getAttendanceOverview = async (req, res, next) => {
   try {
-    const {
-      periodStart,
-      periodEnd,
-      department,
-      employeeType,
-      attendancePeriod,
-    } = req.query;
+    const { periodStart, periodEnd, department, employeeType, attendancePeriod } = req.query
 
     const metrics = await getPayrollDashboardMetrics({
       periodStart,
       periodEnd,
       department,
       employeeType,
-      attendancePeriod,
-    });
+      attendancePeriod
+    })
 
     return successResponse(res, {
-      message: "Attendance overview metrics",
+      message: 'Attendance overview metrics',
       data: {
         attendance: metrics.attendance,
-        headcount: metrics.headcount,
-      },
-    });
+        headcount: metrics.headcount
+      }
+    })
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
 module.exports = {
   getDashboardMetrics,
-  getAttendanceOverview,
-};
+  getAttendanceOverview
+}
