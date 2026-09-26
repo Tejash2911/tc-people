@@ -1,5 +1,5 @@
-const { getPayrollDashboardMetrics } = require('../services/dashboardService')
-const { successResponse } = require('../utils/apiResponse')
+import { getPayrollDashboardMetrics } from '../services/dashboardService.js'
+import { successResponse } from '../utils/apiResponse.js'
 
 /**
  * Get aggregated live payroll and HR dashboard analytics
@@ -54,7 +54,4 @@ const getAttendanceOverview = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  getDashboardMetrics,
-  getAttendanceOverview
-}
+export { getDashboardMetrics, getAttendanceOverview }

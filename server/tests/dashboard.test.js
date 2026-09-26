@@ -1,11 +1,11 @@
-require('./setup')
-const Employee = require('../src/models/Employee')
-const Attendance = require('../src/models/Attendance')
-const TimeOffRequest = require('../src/models/TimeOffRequest')
-const TimeOffType = require('../src/models/TimeOffType')
-const Payslip = require('../src/models/Payslip')
-const { getPayrollDashboardMetrics } = require('../src/services/dashboardService')
-const mongoose = require('mongoose')
+import './setup.js'
+import Employee from '../src/models/Employee.js'
+import Attendance from '../src/models/Attendance.js'
+import TimeOffRequest from '../src/models/TimeOffRequest.js'
+import TimeOffType from '../src/models/TimeOffType.js'
+import Payslip from '../src/models/Payslip.js'
+import { getPayrollDashboardMetrics } from '../src/services/dashboardService.js'
+import mongoose from 'mongoose'
 
 describe('6. Live Database Dashboard & Reporting Engine Tests', () => {
   it('should calculate live aggregation metrics for headcount, payroll, attendance, and leave', async () => {

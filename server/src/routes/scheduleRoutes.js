@@ -1,30 +1,37 @@
-const express = require('express')
+import express from 'express'
+import {
+  getSchedules,
+  getScheduleById,
+  createSchedule,
+  updateSchedule,
+  deleteSchedule
+} from '../controllers/scheduleController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+
 const router = express.Router()
-const scheduleController = require('../controllers/scheduleController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
 router.use(authenticateUser)
 
-router.get('/', scheduleController.getSchedules)
-router.get('/:id', scheduleController.getScheduleById)
+router.get('/', getSchedules)
+router.get('/:id', getScheduleById)
 
 router.post(
   '/',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.createSchedule),
-  scheduleController.createSchedule
+  createSchedule
 )
 
 router.put(
   '/:id',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.updateSchedule),
-  scheduleController.updateSchedule
+  updateSchedule
 )
 
-router.delete('/:id', authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'), scheduleController.deleteSchedule)
+router.delete('/:id', authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'), deleteSchedule)
 
-module.exports = router
+export default router

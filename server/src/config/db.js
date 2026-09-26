@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const config = require('./env')
+import mongoose from 'mongoose'
+import { config } from './env.js'
 
 const connectDB = async (uri = config.mongoUri) => {
   try {
@@ -61,8 +61,4 @@ const withTransaction = async operation => {
   }
 }
 
-module.exports = {
-  connectDB,
-  disconnectDB,
-  withTransaction
-}
+export { connectDB, disconnectDB, withTransaction }

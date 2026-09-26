@@ -1,16 +1,16 @@
-const express = require('express')
+import express from 'express'
+import { register, login, getMe, getUsers, updateUserRole } from '../controllers/authController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+
 const router = express.Router()
-const authController = require('../controllers/authController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
-const { authorizeRoles } = require('../middleware/roleMiddleware')
+router.post('/register', validate(schemas.register), register)
+router.post('/login', validate(schemas.login), login)
+router.get('/me', authenticateUser, getMe)
+router.get('/users', authenticateUser, authorizeRoles('Admin'), getUsers)
+router.patch('/users/:id/role', authenticateUser, authorizeRoles('Admin'), updateUserRole)
 
-router.post('/register', validate(schemas.register), authController.register)
-router.post('/login', validate(schemas.login), authController.login)
-router.get('/me', authenticateUser, authController.getMe)
-router.get('/users', authenticateUser, authorizeRoles('Admin'), authController.getUsers)
-router.patch('/users/:id/role', authenticateUser, authorizeRoles('Admin'), authController.updateUserRole)
-
-module.exports = router
+export default router

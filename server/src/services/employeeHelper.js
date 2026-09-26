@@ -1,7 +1,7 @@
-const Employee = require('../models/Employee')
-const User = require('../models/User')
-const TimeOffType = require('../models/TimeOffType')
-const LeaveAllocation = require('../models/LeaveAllocation')
+import Employee from '../models/Employee.js'
+import User from '../models/User.js'
+import TimeOffType from '../models/TimeOffType.js'
+import LeaveAllocation from '../models/LeaveAllocation.js'
 
 /**
  * Ensures an employee profile and statutory leave allocations exist for a user.
@@ -99,6 +99,4 @@ const ensureEmployeeForUser = async user => {
   return emp
 }
 
-module.exports = {
-  ensureEmployeeForUser
-}
+export { ensureEmployeeForUser }

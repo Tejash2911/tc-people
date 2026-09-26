@@ -1,4 +1,4 @@
-const { compile } = require('mathjs')
+import { compile } from 'mathjs'
 
 /**
  * Safely evaluates a math formula using mathjs within a restricted variable scope.
@@ -26,6 +26,4 @@ const evaluateFormula = (formula, scope = {}) => {
   }
 }
 
-module.exports = {
-  evaluateFormula
-}
+export { evaluateFormula }

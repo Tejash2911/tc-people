@@ -1,15 +1,15 @@
-require('./setup')
-const request = require('supertest')
-const app = require('../src/app')
-const User = require('../src/models/User')
-const Employee = require('../src/models/Employee')
-const { WorkingSchedule } = require('../src/models/WorkingSchedule')
-const SalaryRule = require('../src/models/SalaryRule')
-const SalaryStructure = require('../src/models/SalaryStructure')
-const Contract = require('../src/models/Contract')
-const Attendance = require('../src/models/Attendance')
-const TimeOffType = require('../src/models/TimeOffType')
-const LeaveAllocation = require('../src/models/LeaveAllocation')
+import './setup.js'
+import request from 'supertest'
+import app from '../src/app.js'
+import User from '../src/models/User.js'
+import Employee from '../src/models/Employee.js'
+import { WorkingSchedule } from '../src/models/WorkingSchedule.js'
+import SalaryRule from '../src/models/SalaryRule.js'
+import SalaryStructure from '../src/models/SalaryStructure.js'
+import Contract from '../src/models/Contract.js'
+import Attendance from '../src/models/Attendance.js'
+import TimeOffType from '../src/models/TimeOffType.js'
+import LeaveAllocation from '../src/models/LeaveAllocation.js'
 
 describe('7. Complete End-to-End Scenario Verification', () => {
   let adminToken, hrManagerToken, payrollManagerToken, employeeToken

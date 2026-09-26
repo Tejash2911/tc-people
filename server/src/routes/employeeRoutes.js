@@ -1,30 +1,37 @@
-const express = require('express')
+import express from 'express'
+import {
+  getEmployees,
+  getEmployeeById,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee
+} from '../controllers/employeeController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+
 const router = express.Router()
-const employeeController = require('../controllers/employeeController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
 router.use(authenticateUser)
 
-router.get('/', employeeController.getEmployees)
-router.get('/:id', employeeController.getEmployeeById)
+router.get('/', getEmployees)
+router.get('/:id', getEmployeeById)
 
 router.post(
   '/',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.createEmployee),
-  employeeController.createEmployee
+  createEmployee
 )
 
 router.put(
   '/:id',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.updateEmployee),
-  employeeController.updateEmployee
+  updateEmployee
 )
 
-router.delete('/:id', authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'), employeeController.deleteEmployee)
+router.delete('/:id', authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'), deleteEmployee)
 
-module.exports = router
+export default router

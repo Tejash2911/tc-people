@@ -1,8 +1,9 @@
-const Contract = require('../models/Contract')
-const { getApplicableContract, validateNoOverlappingContract } = require('../services/contractService')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
-const { ensureEmployeeForUser } = require('../services/employeeHelper')
+import Contract from '../models/Contract.js'
+import Payslip from '../models/Payslip.js'
+import { getApplicableContract, validateNoOverlappingContract } from '../services/contractService.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
+import { ensureEmployeeForUser } from '../services/employeeHelper.js'
 
 /**
  * Get all contracts with filtering
@@ -171,8 +172,6 @@ const updateContract = async (req, res, next) => {
   }
 }
 
-const Payslip = require('../models/Payslip')
-
 /**
  * Delete contract
  * DELETE /api/contracts/:id
@@ -207,11 +206,4 @@ const deleteContract = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  getContracts,
-  getContractById,
-  getApplicableContractForPeriod,
-  createContract,
-  updateContract,
-  deleteContract
-}
+export { getContracts, getContractById, getApplicableContractForPeriod, createContract, updateContract, deleteContract }

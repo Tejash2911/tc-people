@@ -2,13 +2,14 @@
   "name": "tcpeople-backend",
   "version": "1.0.0",
   "description": "TC People – Integrated Human Resource and Payroll Operations Platform Backend",
+  "type": "module",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "seed": "node src/seed/seeder.js",
     "clean-db": "node src/seed/clearDb.js",
-    "test": "node ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --forceExit",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --forceExit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

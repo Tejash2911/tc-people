@@ -1,5 +1,5 @@
-const Contract = require('../models/Contract')
-const { AppError } = require('../middleware/errorMiddleware')
+import Contract from '../models/Contract.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Finds the contract applicable to an employee during a given payroll period.
@@ -75,7 +75,4 @@ const validateNoOverlappingContract = async (employeeId, startDate, endDate, exc
   }
 }
 
-module.exports = {
-  getApplicableContract,
-  validateNoOverlappingContract
-}
+export { getApplicableContract, validateNoOverlappingContract }

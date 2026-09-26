@@ -1,4 +1,4 @@
-const { calculateDayHours } = require('../models/WorkingSchedule')
+import { calculateDayHours } from '../models/WorkingSchedule.js'
 
 /**
  * Calculates total weekly hours from schedule days.
@@ -57,7 +57,4 @@ const getExpectedScheduleHours = (schedule, startDate, endDate) => {
   }
 }
 
-module.exports = {
-  calculateWeeklyHours,
-  getExpectedScheduleHours
-}
+export { calculateWeeklyHours, getExpectedScheduleHours }

@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/User')
-const Employee = require('../models/Employee')
-const config = require('../config/env')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
-const { ensureEmployeeForUser } = require('../services/employeeHelper')
+import jwt from 'jsonwebtoken'
+import User from '../models/User.js'
+import Employee from '../models/Employee.js'
+import { config } from '../config/env.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
+import { ensureEmployeeForUser } from '../services/employeeHelper.js'
 
 const signToken = id => {
   return jwt.sign({ id }, config.jwtSecret, {
@@ -179,10 +179,4 @@ const updateUserRole = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  register,
-  login,
-  getMe,
-  getUsers,
-  updateUserRole
-}
+export { register, login, getMe, getUsers, updateUserRole }

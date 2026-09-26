@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const leaveAllocationSchema = new mongoose.Schema(
   {
@@ -64,4 +64,4 @@ leaveAllocationSchema.pre('save', function (next) {
 
 const LeaveAllocation = mongoose.model('LeaveAllocation', leaveAllocationSchema)
 
-module.exports = LeaveAllocation
+export default LeaveAllocation

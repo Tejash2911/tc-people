@@ -1,7 +1,7 @@
-const SalaryStructure = require('../models/SalaryStructure')
-const Contract = require('../models/Contract')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
+import SalaryStructure from '../models/SalaryStructure.js'
+import Contract from '../models/Contract.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Get all salary structures with rule and employee metrics
@@ -135,7 +135,7 @@ const deleteSalaryStructure = async (req, res, next) => {
   }
 }
 
-module.exports = {
+export {
   getSalaryStructures,
   getSalaryStructureById,
   createSalaryStructure,

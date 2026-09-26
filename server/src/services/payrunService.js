@@ -1,12 +1,12 @@
-const Payrun = require('../models/Payrun')
-const Payslip = require('../models/Payslip')
-const Employee = require('../models/Employee')
-const Attendance = require('../models/Attendance')
-const TimeOffRequest = require('../models/TimeOffRequest')
-const { getApplicableContract } = require('./contractService')
-const { calculateSalary } = require('./salaryEngine')
-const { AppError } = require('../middleware/errorMiddleware')
-const { withTransaction } = require('../config/db')
+import Payrun from '../models/Payrun.js'
+import Payslip from '../models/Payslip.js'
+import Employee from '../models/Employee.js'
+import Attendance from '../models/Attendance.js'
+import TimeOffRequest from '../models/TimeOffRequest.js'
+import { getApplicableContract } from './contractService.js'
+import { calculateSalary } from './salaryEngine.js'
+import { AppError } from '../middleware/errorMiddleware.js'
+import { withTransaction } from '../config/db.js'
 
 /**
  * Finds eligible employees for a payrun based on active status and having an applicable contract.
@@ -254,9 +254,4 @@ const markPayrunPaid = async payrunId => {
   })
 }
 
-module.exports = {
-  getEligibleEmployees,
-  computePayrun,
-  validatePayrun,
-  markPayrunPaid
-}
+export { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid }

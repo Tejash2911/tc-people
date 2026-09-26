@@ -1,10 +1,10 @@
-require('./setup')
-const { WorkingSchedule } = require('../src/models/WorkingSchedule')
-const Employee = require('../src/models/Employee')
-const Contract = require('../src/models/Contract')
-const SalaryStructure = require('../src/models/SalaryStructure')
-const { calculateWeeklyHours } = require('../src/services/scheduleService')
-const { getApplicableContract, validateNoOverlappingContract } = require('../src/services/contractService')
+import './setup.js'
+import { WorkingSchedule } from '../src/models/WorkingSchedule.js'
+import Employee from '../src/models/Employee.js'
+import Contract from '../src/models/Contract.js'
+import SalaryStructure from '../src/models/SalaryStructure.js'
+import { calculateWeeklyHours } from '../src/services/scheduleService.js'
+import { getApplicableContract, validateNoOverlappingContract } from '../src/services/contractService.js'
 
 describe('2. Working Schedule & Contract Management Tests', () => {
   it('should automatically calculate total weekly hours from schedule days', async () => {

@@ -1,21 +1,22 @@
-const express = require('express')
+import express from 'express'
+import { getDashboardMetrics, getAttendanceOverview } from '../controllers/dashboardController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+
 const router = express.Router()
-const dashboardController = require('../controllers/dashboardController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
 
 router.use(authenticateUser)
 
 router.get(
   '/payroll',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  dashboardController.getDashboardMetrics
+  getDashboardMetrics
 )
 
 router.get(
   '/attendance-overview',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  dashboardController.getAttendanceOverview
+  getAttendanceOverview
 )
 
-module.exports = router
+export default router

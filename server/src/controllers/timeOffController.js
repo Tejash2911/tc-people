@@ -1,10 +1,10 @@
-const TimeOffType = require('../models/TimeOffType')
-const LeaveAllocation = require('../models/LeaveAllocation')
-const TimeOffRequest = require('../models/TimeOffRequest')
-const { approveLeaveRequest, refuseLeaveRequest, getLeaveBalance } = require('../services/leaveService')
-const { ensureEmployeeForUser } = require('../services/employeeHelper')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
+import TimeOffType from '../models/TimeOffType.js'
+import LeaveAllocation from '../models/LeaveAllocation.js'
+import TimeOffRequest from '../models/TimeOffRequest.js'
+import { approveLeaveRequest, refuseLeaveRequest, getLeaveBalance } from '../services/leaveService.js'
+import { ensureEmployeeForUser } from '../services/employeeHelper.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 // ==================== TIME OFF TYPES ====================
 
@@ -410,7 +410,7 @@ const getEmployeeLeaveBalance = async (req, res, next) => {
   }
 }
 
-module.exports = {
+export {
   getTimeOffTypes,
   createTimeOffType,
   updateTimeOffType,

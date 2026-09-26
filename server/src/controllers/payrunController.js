@@ -1,8 +1,8 @@
-const Payrun = require('../models/Payrun')
-const { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } = require('../services/payrunService')
-const { bulkSendPayrunPayslips } = require('../services/emailService')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
+import Payrun from '../models/Payrun.js'
+import { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } from '../services/payrunService.js'
+import { bulkSendPayrunPayslips } from '../services/emailService.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Get all payruns
@@ -216,7 +216,7 @@ const sendPayslips = async (req, res, next) => {
   }
 }
 
-module.exports = {
+export {
   getPayruns,
   getPayrunById,
   getPayrunEligibleEmployees,

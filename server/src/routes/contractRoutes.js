@@ -1,45 +1,53 @@
-const express = require('express')
+import express from 'express'
+import {
+  getContracts,
+  getContractById,
+  getApplicableContractForPeriod,
+  createContract,
+  updateContract,
+  deleteContract
+} from '../controllers/contractController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+
 const router = express.Router()
-const contractController = require('../controllers/contractController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
 router.use(authenticateUser)
 
 router.get(
   '/applicable',
   authorizeRoles('Employee', 'HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  contractController.getApplicableContractForPeriod
+  getApplicableContractForPeriod
 )
 
 router.get(
   '/',
   authorizeRoles('Employee', 'HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  contractController.getContracts
+  getContracts
 )
 
 router.get(
   '/:id',
   authorizeRoles('Employee', 'HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  contractController.getContractById
+  getContractById
 )
 
 router.post(
   '/',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.createContract),
-  contractController.createContract
+  createContract
 )
 
 router.put(
   '/:id',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.updateContract),
-  contractController.updateContract
+  updateContract
 )
 
-router.delete('/:id', authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'), contractController.deleteContract)
+router.delete('/:id', authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'), deleteContract)
 
-module.exports = router
+export default router

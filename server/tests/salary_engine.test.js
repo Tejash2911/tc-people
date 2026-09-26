@@ -1,7 +1,7 @@
-require('./setup')
-const SalaryRule = require('../src/models/SalaryRule')
-const SalaryStructure = require('../src/models/SalaryStructure')
-const { calculateSalary } = require('../src/services/salaryEngine')
+import './setup.js'
+import SalaryRule from '../src/models/SalaryRule.js'
+import SalaryStructure from '../src/models/SalaryStructure.js'
+import { calculateSalary } from '../src/services/salaryEngine.js'
 
 describe('4. Dynamic Salary Rule Engine & Sequencing Tests', () => {
   it('should execute salary rules in strict sequence and evaluate Fixed, Percentage, and Formula calculations', async () => {

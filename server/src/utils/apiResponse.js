@@ -21,7 +21,4 @@ const errorResponse = (res, { message = 'An error occurred', status = 500, error
   })
 }
 
-module.exports = {
-  successResponse,
-  errorResponse
-}
+export { successResponse, errorResponse }

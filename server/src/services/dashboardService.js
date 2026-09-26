@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
-const Payslip = require('../models/Payslip')
-const Payrun = require('../models/Payrun')
-const Employee = require('../models/Employee')
-const Attendance = require('../models/Attendance')
-const TimeOffRequest = require('../models/TimeOffRequest')
-const LeaveAllocation = require('../models/LeaveAllocation')
-const Contract = require('../models/Contract')
+import mongoose from 'mongoose'
+import Payslip from '../models/Payslip.js'
+import Payrun from '../models/Payrun.js'
+import Employee from '../models/Employee.js'
+import Attendance from '../models/Attendance.js'
+import TimeOffRequest from '../models/TimeOffRequest.js'
+import LeaveAllocation from '../models/LeaveAllocation.js'
+import Contract from '../models/Contract.js'
 
 /**
  * Aggregates live payroll & HR dashboard metrics based on dynamic filters.
@@ -296,6 +296,4 @@ const getPayrollDashboardMetrics = async (filters = {}) => {
   }
 }
 
-module.exports = {
-  getPayrollDashboardMetrics
-}
+export { getPayrollDashboardMetrics }

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const punchIntervalSchema = new mongoose.Schema(
   {
@@ -109,4 +109,4 @@ attendanceSchema.pre('save', function (next) {
 
 const Attendance = mongoose.model('Attendance', attendanceSchema)
 
-module.exports = Attendance
+export default Attendance

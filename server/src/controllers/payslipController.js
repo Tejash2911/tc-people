@@ -1,8 +1,8 @@
-const Payslip = require('../models/Payslip')
-const { generatePayslipPDF } = require('../services/pdfService')
-const { sendSinglePayslipEmail } = require('../services/emailService')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
+import Payslip from '../models/Payslip.js'
+import { generatePayslipPDF } from '../services/pdfService.js'
+import { sendSinglePayslipEmail } from '../services/emailService.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Get all payslips with filtering
@@ -125,9 +125,4 @@ const sendEmail = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  getPayslips,
-  getPayslipById,
-  getPayslipPDF,
-  sendEmail
-}
+export { getPayslips, getPayslipById, getPayslipPDF, sendEmail }

@@ -14,8 +14,4 @@ const error = (...args) => {
   console.error('[ERROR]', ...args)
 }
 
-module.exports = {
-  info,
-  warn,
-  error
-}
+export { info, warn, error }

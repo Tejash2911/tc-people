@@ -1,8 +1,8 @@
-const SalaryStructure = require('../models/SalaryStructure')
-const SalaryRule = require('../models/SalaryRule')
-const { evaluateFormula } = require('../utils/mathEvaluator')
-const { getExpectedScheduleHours } = require('./scheduleService')
-const { AppError } = require('../middleware/errorMiddleware')
+import SalaryStructure from '../models/SalaryStructure.js'
+import SalaryRule from '../models/SalaryRule.js'
+import { evaluateFormula } from '../utils/mathEvaluator.js'
+import { getExpectedScheduleHours } from './scheduleService.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Reusable dynamic payroll calculation engine.
@@ -202,6 +202,4 @@ const calculateSalary = async ({
   }
 }
 
-module.exports = {
-  calculateSalary
-}
+export { calculateSalary }

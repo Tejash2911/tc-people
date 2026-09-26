@@ -1,8 +1,8 @@
-const Attendance = require('../models/Attendance')
-const Employee = require('../models/Employee')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
-const { ensureEmployeeForUser } = require('../services/employeeHelper')
+import Attendance from '../models/Attendance.js'
+import Employee from '../models/Employee.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
+import { ensureEmployeeForUser } from '../services/employeeHelper.js'
 
 /**
  * Normalizes date to UTC midnight matching calendar day (YYYY-MM-DD)
@@ -431,11 +431,4 @@ const deleteAttendance = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  getAttendance,
-  getAttendanceById,
-  createAttendance,
-  updateAttendance,
-  togglePunch,
-  deleteAttendance
-}
+export { getAttendance, getAttendanceById, createAttendance, updateAttendance, togglePunch, deleteAttendance }

@@ -1,4 +1,4 @@
-const { AppError } = require('./errorMiddleware')
+import { AppError } from './errorMiddleware.js'
 
 /**
  * Role-Based Access Control (RBAC) middleware.
@@ -28,6 +28,4 @@ const authorizeRoles = (...roles) => {
   }
 }
 
-module.exports = {
-  authorizeRoles
-}
+export { authorizeRoles }

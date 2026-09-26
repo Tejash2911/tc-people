@@ -1,7 +1,7 @@
-const Employee = require('../models/Employee')
-const Contract = require('../models/Contract')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
+import Employee from '../models/Employee.js'
+import Contract from '../models/Contract.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Get all employees with filtering, searching, and pagination
@@ -196,10 +196,4 @@ const deleteEmployee = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  getEmployees,
-  getEmployeeById,
-  createEmployee,
-  updateEmployee,
-  deleteEmployee
-}
+export { getEmployees, getEmployeeById, createEmployee, updateEmployee, deleteEmployee }

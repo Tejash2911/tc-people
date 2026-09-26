@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const timeOffRequestSchema = new mongoose.Schema(
   {
@@ -67,4 +67,4 @@ timeOffRequestSchema.index({
 
 const TimeOffRequest = mongoose.model('TimeOffRequest', timeOffRequestSchema)
 
-module.exports = TimeOffRequest
+export default TimeOffRequest

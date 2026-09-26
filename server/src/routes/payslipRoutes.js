@@ -1,15 +1,16 @@
-const express = require('express')
+import express from 'express'
+import { getPayslips, getPayslipById, getPayslipPDF, sendEmail } from '../controllers/payslipController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+
 const router = express.Router()
-const payslipController = require('../controllers/payslipController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
 
 router.use(authenticateUser)
 
-router.get('/', payslipController.getPayslips)
-router.get('/:id', payslipController.getPayslipById)
-router.get('/:id/pdf', payslipController.getPayslipPDF)
+router.get('/', getPayslips)
+router.get('/:id', getPayslipById)
+router.get('/:id/pdf', getPayslipPDF)
 
-router.post('/:id/send-email', authorizeRoles('HR Payroll Manager', 'Admin'), payslipController.sendEmail)
+router.post('/:id/send-email', authorizeRoles('HR Payroll Manager', 'Admin'), sendEmail)
 
-module.exports = router
+export default router

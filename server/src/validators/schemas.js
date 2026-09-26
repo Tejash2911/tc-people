@@ -1,4 +1,4 @@
-const Joi = require('joi')
+import Joi from 'joi'
 
 const objectIdRegex = /^[0-9a-fA-F]{24}$/
 const customObjectId = Joi.string().pattern(objectIdRegex).message('Invalid ObjectId format')
@@ -311,7 +311,4 @@ const schemas = {
   })
 }
 
-module.exports = {
-  schemas,
-  customObjectId
-}
+export { schemas, customObjectId }

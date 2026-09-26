@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const scheduleDaySchema = new mongoose.Schema(
   {
@@ -91,7 +91,4 @@ workingScheduleSchema.pre('save', function (next) {
 
 const WorkingSchedule = mongoose.model('WorkingSchedule', workingScheduleSchema)
 
-module.exports = {
-  WorkingSchedule,
-  calculateDayHours
-}
+export { WorkingSchedule, calculateDayHours }

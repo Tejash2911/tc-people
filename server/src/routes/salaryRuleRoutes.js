@@ -1,39 +1,28 @@
-const express = require('express')
+import express from 'express'
+import {
+  getSalaryRules,
+  getSalaryRuleById,
+  createSalaryRule,
+  updateSalaryRule,
+  deleteSalaryRule
+} from '../controllers/salaryRuleController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+
 const router = express.Router()
-const salaryRuleController = require('../controllers/salaryRuleController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
 router.use(authenticateUser)
 
-router.get(
-  '/',
-  authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  salaryRuleController.getSalaryRules
-)
+router.get('/', authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'), getSalaryRules)
 
-router.get(
-  '/:id',
-  authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  salaryRuleController.getSalaryRuleById
-)
+router.get('/:id', authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'), getSalaryRuleById)
 
-router.post(
-  '/',
-  authorizeRoles('HR Payroll Manager', 'Admin'),
-  validate(schemas.createSalaryRule),
-  salaryRuleController.createSalaryRule
-)
+router.post('/', authorizeRoles('HR Payroll Manager', 'Admin'), validate(schemas.createSalaryRule), createSalaryRule)
 
-router.put(
-  '/:id',
-  authorizeRoles('HR Payroll Manager', 'Admin'),
-  validate(schemas.updateSalaryRule),
-  salaryRuleController.updateSalaryRule
-)
+router.put('/:id', authorizeRoles('HR Payroll Manager', 'Admin'), validate(schemas.updateSalaryRule), updateSalaryRule)
 
-router.delete('/:id', authorizeRoles('HR Payroll Manager', 'Admin'), salaryRuleController.deleteSalaryRule)
+router.delete('/:id', authorizeRoles('HR Payroll Manager', 'Admin'), deleteSalaryRule)
 
-module.exports = router
+export default router

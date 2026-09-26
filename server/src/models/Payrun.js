@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const payrunSchema = new mongoose.Schema(
   {
@@ -87,4 +87,4 @@ payrunSchema.index({ periodStart: 1, periodEnd: 1, status: 1 })
 
 const Payrun = mongoose.model('Payrun', payrunSchema)
 
-module.exports = Payrun
+export default Payrun

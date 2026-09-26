@@ -1,7 +1,7 @@
-const { WorkingSchedule } = require('../models/WorkingSchedule')
-const { calculateWeeklyHours } = require('../services/scheduleService')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
+import { WorkingSchedule } from '../models/WorkingSchedule.js'
+import { calculateWeeklyHours } from '../services/scheduleService.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Get all working schedules
@@ -110,10 +110,4 @@ const deleteSchedule = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  getSchedules,
-  getScheduleById,
-  createSchedule,
-  updateSchedule,
-  deleteSchedule
-}
+export { getSchedules, getScheduleById, createSchedule, updateSchedule, deleteSchedule }

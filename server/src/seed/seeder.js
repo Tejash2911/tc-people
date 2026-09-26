@@ -1,5 +1,5 @@
-const { connectDB, disconnectDB } = require('../config/db')
-const { seedDatabase } = require('./seedData')
+import { connectDB, disconnectDB } from '../config/db.js'
+import seedDatabase from './seedData.js'
 
 const runSeeder = async () => {
   try {

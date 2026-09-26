@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const contractSchema = new mongoose.Schema(
   {
@@ -69,4 +69,4 @@ contractSchema.index({ employee: 1, startDate: 1, endDate: 1, status: 1 })
 
 const Contract = mongoose.model('Contract', contractSchema)
 
-module.exports = Contract
+export default Contract

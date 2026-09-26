@@ -1,25 +1,26 @@
-const express = require('express')
+import express from 'express'
+import {
+  getAttendance,
+  getAttendanceById,
+  createAttendance,
+  updateAttendance,
+  togglePunch,
+  deleteAttendance
+} from '../controllers/attendanceController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+
 const router = express.Router()
-const attendanceController = require('../controllers/attendanceController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
 router.use(authenticateUser)
 
-router.post('/punch', attendanceController.togglePunch)
-router.get('/', attendanceController.getAttendance)
-router.get('/:id', attendanceController.getAttendanceById)
+router.post('/punch', togglePunch)
+router.get('/', getAttendance)
+router.get('/:id', getAttendanceById)
+router.post('/', validate(schemas.createAttendance), createAttendance)
+router.put('/:id', validate(schemas.updateAttendance), updateAttendance)
+router.delete('/:id', authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'), deleteAttendance)
 
-router.post('/', validate(schemas.createAttendance), attendanceController.createAttendance)
-
-router.put('/:id', validate(schemas.updateAttendance), attendanceController.updateAttendance)
-
-router.delete(
-  '/:id',
-  authorizeRoles('HR Manager', 'HR Payroll Manager', 'Admin'),
-  attendanceController.deleteAttendance
-)
-
-module.exports = router
+export default router

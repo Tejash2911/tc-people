@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer')
-const config = require('./env')
+import nodemailer from 'nodemailer'
+import { config } from './env.js'
 
 let transporter = null
 
@@ -44,6 +44,4 @@ const getTransporter = async () => {
   return transporter
 }
 
-module.exports = {
-  getTransporter
-}
+export { getTransporter }

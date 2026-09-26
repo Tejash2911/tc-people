@@ -1,4 +1,4 @@
-const { AppError } = require('./errorMiddleware')
+import { AppError } from './errorMiddleware.js'
 
 /**
  * Validates request data against a Joi schema.
@@ -24,6 +24,4 @@ const validate = (schema, property = 'body') => {
   }
 }
 
-module.exports = {
-  validate
-}
+export { validate }

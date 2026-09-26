@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken')
-const config = require('../config/env')
-const User = require('../models/User')
-const { AppError } = require('./errorMiddleware')
+import jwt from 'jsonwebtoken'
+import { config } from '../config/env.js'
+import User from '../models/User.js'
+import { AppError } from './errorMiddleware.js'
 
 /**
  * Authenticates user from Bearer JWT token in Authorization header.
@@ -37,6 +37,4 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  authenticateUser
-}
+export { authenticateUser }

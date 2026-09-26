@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const timeOffTypeSchema = new mongoose.Schema(
   {
@@ -50,4 +50,4 @@ const timeOffTypeSchema = new mongoose.Schema(
 
 const TimeOffType = mongoose.model('TimeOffType', timeOffTypeSchema)
 
-module.exports = TimeOffType
+export default TimeOffType

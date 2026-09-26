@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const salaryStructureSchema = new mongoose.Schema(
   {
@@ -39,4 +39,4 @@ const salaryStructureSchema = new mongoose.Schema(
 
 const SalaryStructure = mongoose.model('SalaryStructure', salaryStructureSchema)
 
-module.exports = SalaryStructure
+export default SalaryStructure

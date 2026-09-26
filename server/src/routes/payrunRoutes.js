@@ -1,52 +1,55 @@
-const express = require('express')
+import express from 'express'
+import {
+  getPayruns,
+  getPayrunById,
+  getPayrunEligibleEmployees,
+  createPayrun,
+  updatePayrun,
+  compute,
+  validate as payrunValidate,
+  markPaid,
+  sendPayslips
+} from '../controllers/payrunController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+
 const router = express.Router()
-const payrunController = require('../controllers/payrunController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
 router.use(authenticateUser)
 
 router.get(
   '/eligible-employees',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  payrunController.getPayrunEligibleEmployees
+  getPayrunEligibleEmployees
 )
 
-router.get(
-  '/',
-  authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  payrunController.getPayruns
-)
+router.get('/', authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'), getPayruns)
 
-router.get(
-  '/:id',
-  authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  payrunController.getPayrunById
-)
+router.get('/:id', authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'), getPayrunById)
 
 router.post(
   '/',
   authorizeRoles('HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.createPayrun),
-  payrunController.createPayrun
+  createPayrun
 )
 
 router.put(
   '/:id',
   authorizeRoles('HR Payroll User', 'HR Payroll Manager', 'Admin'),
   validate(schemas.updatePayrun),
-  payrunController.updatePayrun
+  updatePayrun
 )
 
 // Payrun Processing Actions
-router.post('/:id/compute', authorizeRoles('HR Payroll User', 'HR Payroll Manager', 'Admin'), payrunController.compute)
+router.post('/:id/compute', authorizeRoles('HR Payroll User', 'HR Payroll Manager', 'Admin'), compute)
 
-router.post('/:id/validate', authorizeRoles('HR Payroll Manager', 'Admin'), payrunController.validate)
+router.post('/:id/validate', authorizeRoles('HR Payroll Manager', 'Admin'), payrunValidate)
 
-router.post('/:id/mark-paid', authorizeRoles('HR Payroll Manager', 'Admin'), payrunController.markPaid)
+router.post('/:id/mark-paid', authorizeRoles('HR Payroll Manager', 'Admin'), markPaid)
 
-router.post('/:id/send-payslips', authorizeRoles('HR Payroll Manager', 'Admin'), payrunController.sendPayslips)
+router.post('/:id/send-payslips', authorizeRoles('HR Payroll Manager', 'Admin'), sendPayslips)
 
-module.exports = router
+export default router

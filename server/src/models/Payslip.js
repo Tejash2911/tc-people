@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const ruleBreakdownSchema = new mongoose.Schema(
   {
@@ -136,4 +136,4 @@ payslipSchema.index({ employee: 1, 'payrollPeriod.start': 1, 'payrollPeriod.end'
 
 const Payslip = mongoose.model('Payslip', payslipSchema)
 
-module.exports = Payslip
+export default Payslip

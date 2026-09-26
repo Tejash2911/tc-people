@@ -1,19 +1,19 @@
-const express = require('express')
-const cors = require('cors')
-const { errorHandler, AppError } = require('./middleware/errorMiddleware')
+import express from 'express'
+import cors from 'cors'
+import { errorHandler, AppError } from './middleware/errorMiddleware.js'
 
 // Route imports
-const authRoutes = require('./routes/authRoutes')
-const employeeRoutes = require('./routes/employeeRoutes')
-const contractRoutes = require('./routes/contractRoutes')
-const scheduleRoutes = require('./routes/scheduleRoutes')
-const attendanceRoutes = require('./routes/attendanceRoutes')
-const timeOffRoutes = require('./routes/timeOffRoutes')
-const salaryStructureRoutes = require('./routes/salaryStructureRoutes')
-const salaryRuleRoutes = require('./routes/salaryRuleRoutes')
-const payrunRoutes = require('./routes/payrunRoutes')
-const payslipRoutes = require('./routes/payslipRoutes')
-const dashboardRoutes = require('./routes/dashboardRoutes')
+import authRoutes from './routes/authRoutes.js'
+import employeeRoutes from './routes/employeeRoutes.js'
+import contractRoutes from './routes/contractRoutes.js'
+import scheduleRoutes from './routes/scheduleRoutes.js'
+import attendanceRoutes from './routes/attendanceRoutes.js'
+import timeOffRoutes from './routes/timeOffRoutes.js'
+import salaryStructureRoutes from './routes/salaryStructureRoutes.js'
+import salaryRuleRoutes from './routes/salaryRuleRoutes.js'
+import payrunRoutes from './routes/payrunRoutes.js'
+import payslipRoutes from './routes/payslipRoutes.js'
+import dashboardRoutes from './routes/dashboardRoutes.js'
 
 const app = express()
 
@@ -84,4 +84,4 @@ app.all('*', (req, res, next) => {
 // Centralized Global Error Handler
 app.use(errorHandler)
 
-module.exports = app
+export default app

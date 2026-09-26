@@ -1,5 +1,5 @@
-const { errorResponse } = require('../utils/apiResponse')
-const logger = require('../utils/logger')
+import { errorResponse } from '../utils/apiResponse.js'
+import { error } from '../utils/logger.js'
 
 class AppError extends Error {
   constructor(message, statusCode = 500, errors = []) {
@@ -49,7 +49,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (statusCode === 500) {
-    logger.error('Unhandled Exception:', err)
+    error('Unhandled Exception:', err)
   }
 
   return errorResponse(res, {
@@ -59,7 +59,4 @@ const errorHandler = (err, req, res, next) => {
   })
 }
 
-module.exports = {
-  AppError,
-  errorHandler
-}
+export { AppError, errorHandler }

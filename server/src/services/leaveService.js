@@ -1,8 +1,8 @@
-const TimeOffRequest = require('../models/TimeOffRequest')
-const LeaveAllocation = require('../models/LeaveAllocation')
-const TimeOffType = require('../models/TimeOffType')
-const { AppError } = require('../middleware/errorMiddleware')
-const { withTransaction } = require('../config/db')
+import TimeOffRequest from '../models/TimeOffRequest.js'
+import LeaveAllocation from '../models/LeaveAllocation.js'
+import TimeOffType from '../models/TimeOffType.js'
+import { AppError } from '../middleware/errorMiddleware.js'
+import { withTransaction } from '../config/db.js'
 
 /**
  * Gets the current leave balance for an employee for a specific Time Off Type.
@@ -131,8 +131,4 @@ const refuseLeaveRequest = async (requestId, refusedByUserId, rejectionReason) =
   return request
 }
 
-module.exports = {
-  getLeaveBalance,
-  approveLeaveRequest,
-  refuseLeaveRequest
-}
+export { getLeaveBalance, approveLeaveRequest, refuseLeaveRequest }

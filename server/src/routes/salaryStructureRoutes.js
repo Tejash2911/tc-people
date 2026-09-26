@@ -1,39 +1,42 @@
-const express = require('express')
+import express from 'express'
+import {
+  getSalaryStructures,
+  getSalaryStructureById,
+  createSalaryStructure,
+  updateSalaryStructure,
+  deleteSalaryStructure
+} from '../controllers/salaryStructureController.js'
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { authorizeRoles } from '../middleware/roleMiddleware.js'
+import { validate } from '../middleware/validateMiddleware.js'
+import { schemas } from '../validators/schemas.js'
+
 const router = express.Router()
-const salaryStructureController = require('../controllers/salaryStructureController')
-const { authenticateUser } = require('../middleware/authMiddleware')
-const { authorizeRoles } = require('../middleware/roleMiddleware')
-const { validate } = require('../middleware/validateMiddleware')
-const { schemas } = require('../validators/schemas')
 
 router.use(authenticateUser)
 
-router.get(
-  '/',
-  authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  salaryStructureController.getSalaryStructures
-)
+router.get('/', authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'), getSalaryStructures)
 
 router.get(
   '/:id',
   authorizeRoles('HR Manager', 'HR Payroll User', 'HR Payroll Manager', 'Admin'),
-  salaryStructureController.getSalaryStructureById
+  getSalaryStructureById
 )
 
 router.post(
   '/',
   authorizeRoles('HR Payroll Manager', 'Admin'),
   validate(schemas.createSalaryStructure),
-  salaryStructureController.createSalaryStructure
+  createSalaryStructure
 )
 
 router.put(
   '/:id',
   authorizeRoles('HR Payroll Manager', 'Admin'),
   validate(schemas.updateSalaryStructure),
-  salaryStructureController.updateSalaryStructure
+  updateSalaryStructure
 )
 
-router.delete('/:id', authorizeRoles('HR Payroll Manager', 'Admin'), salaryStructureController.deleteSalaryStructure)
+router.delete('/:id', authorizeRoles('HR Payroll Manager', 'Admin'), deleteSalaryStructure)
 
-module.exports = router
+export default router

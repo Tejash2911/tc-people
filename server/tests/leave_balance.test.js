@@ -1,10 +1,10 @@
-require('./setup')
-const Employee = require('../src/models/Employee')
-const TimeOffType = require('../src/models/TimeOffType')
-const LeaveAllocation = require('../src/models/LeaveAllocation')
-const TimeOffRequest = require('../src/models/TimeOffRequest')
-const User = require('../src/models/User')
-const { approveLeaveRequest, getLeaveBalance } = require('../src/services/leaveService')
+import './setup.js'
+import Employee from '../src/models/Employee.js'
+import TimeOffType from '../src/models/TimeOffType.js'
+import LeaveAllocation from '../src/models/LeaveAllocation.js'
+import TimeOffRequest from '../src/models/TimeOffRequest.js'
+import User from '../src/models/User.js'
+import { approveLeaveRequest, getLeaveBalance } from '../src/services/leaveService.js'
 
 describe('3. Time Off, Leave Allocation & Auto Balance Deduction Tests', () => {
   it('should approve leave request and automatically consume leave allocation balance', async () => {

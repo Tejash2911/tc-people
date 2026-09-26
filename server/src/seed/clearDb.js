@@ -1,17 +1,17 @@
-const bcrypt = require('bcryptjs')
-const { connectDB, disconnectDB } = require('../config/db')
-const User = require('../models/User')
-const Employee = require('../models/Employee')
-const { WorkingSchedule } = require('../models/WorkingSchedule')
-const Contract = require('../models/Contract')
-const Attendance = require('../models/Attendance')
-const TimeOffType = require('../models/TimeOffType')
-const LeaveAllocation = require('../models/LeaveAllocation')
-const TimeOffRequest = require('../models/TimeOffRequest')
-const SalaryRule = require('../models/SalaryRule')
-const SalaryStructure = require('../models/SalaryStructure')
-const Payrun = require('../models/Payrun')
-const Payslip = require('../models/Payslip')
+import bcrypt from 'bcryptjs'
+import { connectDB, disconnectDB } from '../config/db.js'
+import User from '../models/User.js'
+import Employee from '../models/Employee.js'
+import { WorkingSchedule } from '../models/WorkingSchedule.js'
+import Contract from '../models/Contract.js'
+import Attendance from '../models/Attendance.js'
+import TimeOffType from '../models/TimeOffType.js'
+import LeaveAllocation from '../models/LeaveAllocation.js'
+import TimeOffRequest from '../models/TimeOffRequest.js'
+import SalaryRule from '../models/SalaryRule.js'
+import SalaryStructure from '../models/SalaryStructure.js'
+import Payrun from '../models/Payrun.js'
+import Payslip from '../models/Payslip.js'
 
 const clearAndInitializeProductionDB = async () => {
   try {
@@ -223,7 +223,7 @@ const clearAndInitializeProductionDB = async () => {
     // 5. Create 1 Clean Super Admin Account
     console.log('👤 [INIT] Creating initial Administrator Account...')
     const salt = await bcrypt.genSalt(10)
-    const passwordHash = await bcrypt.hash('Password@123', salt)
+    const passwordHash = await bcrypt.hash('Tes@123', salt)
 
     await User.create({
       name: 'System Administrator',

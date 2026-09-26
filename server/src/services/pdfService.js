@@ -1,6 +1,6 @@
-const PDFDocument = require('pdfkit')
-const Payslip = require('../models/Payslip')
-const { AppError } = require('../middleware/errorMiddleware')
+import PDFDocument from 'pdfkit'
+import Payslip from '../models/Payslip.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Generates a clean, professional PDF buffer for a Payslip using PDFKit.
@@ -184,6 +184,4 @@ const generatePayslipPDF = async payslipId => {
   })
 }
 
-module.exports = {
-  generatePayslipPDF
-}
+export { generatePayslipPDF }

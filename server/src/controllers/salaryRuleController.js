@@ -1,6 +1,6 @@
-const SalaryRule = require('../models/SalaryRule')
-const { successResponse } = require('../utils/apiResponse')
-const { AppError } = require('../middleware/errorMiddleware')
+import SalaryRule from '../models/SalaryRule.js'
+import { successResponse } from '../utils/apiResponse.js'
+import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
  * Get all salary rules
@@ -111,10 +111,4 @@ const deleteSalaryRule = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  getSalaryRules,
-  getSalaryRuleById,
-  createSalaryRule,
-  updateSalaryRule,
-  deleteSalaryRule
-}
+export { getSalaryRules, getSalaryRuleById, createSalaryRule, updateSalaryRule, deleteSalaryRule }

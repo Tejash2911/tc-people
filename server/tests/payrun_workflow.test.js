@@ -1,12 +1,12 @@
-require('./setup')
-const Employee = require('../src/models/Employee')
-const Contract = require('../src/models/Contract')
-const SalaryRule = require('../src/models/SalaryRule')
-const SalaryStructure = require('../src/models/SalaryStructure')
-const Payrun = require('../src/models/Payrun')
-const Payslip = require('../src/models/Payslip')
-const User = require('../src/models/User')
-const { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } = require('../src/services/payrunService')
+import './setup.js'
+import Employee from '../src/models/Employee.js'
+import Contract from '../src/models/Contract.js'
+import SalaryRule from '../src/models/SalaryRule.js'
+import SalaryStructure from '../src/models/SalaryStructure.js'
+import Payrun from '../src/models/Payrun.js'
+import Payslip from '../src/models/Payslip.js'
+import User from '../src/models/User.js'
+import { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } from '../src/services/payrunService.js'
 
 describe('5. Payrun Processing & Duplicate Payslip Protection Tests', () => {
   let employee1, employee2, structure, adminUser
