@@ -1,5 +1,5 @@
 import { errorResponse } from '../utils/apiResponse.js'
-import { error } from '../utils/logger.js'
+import logger from '../utils/logger.js'
 
 class AppError extends Error {
   constructor(message, statusCode = 500, errors = []) {
@@ -49,7 +49,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (statusCode === 500) {
-    error('Unhandled Exception:', err)
+    logger.error('Unhandled Exception:', err)
   }
 
   return errorResponse(res, {

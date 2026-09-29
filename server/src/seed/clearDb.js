@@ -223,7 +223,7 @@ const clearAndInitializeProductionDB = async () => {
     // 5. Create 1 Clean Super Admin Account
     console.log('👤 [INIT] Creating initial Administrator Account...')
     const salt = await bcrypt.genSalt(10)
-    const passwordHash = await bcrypt.hash('Tes@123', salt)
+    const passwordHash = await bcrypt.hash('Test@123', salt)
 
     await User.create({
       name: 'System Administrator',
@@ -238,7 +238,7 @@ const clearAndInitializeProductionDB = async () => {
     console.log('======================================================')
     console.log('Initial Super Admin Credentials:')
     console.log('  Email:    admin@tcpeople.com')
-    console.log('  Password: Password@123')
+    console.log('  Password: Test@123')
     console.log('  Role:     Admin')
     console.log('\nZero dummy employees, contracts, payruns, or mock data.')
     console.log('You can now add real company employees and process real payroll.\n')

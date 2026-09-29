@@ -10,7 +10,7 @@ const connectDB = async (uri = config.mongoUri) => {
     return conn
   } catch (error) {
     console.error(`[Database Error] Connection Failed: ${error.message}`)
-    if (process.env.NODE_ENV !== 'test') {
+    if (config.env !== 'test') {
       process.exit(1)
     }
     throw error

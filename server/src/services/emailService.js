@@ -3,7 +3,7 @@ import { config } from '../config/env.js'
 import Payslip from '../models/Payslip.js'
 import Payrun from '../models/Payrun.js'
 import { generatePayslipPDF } from './pdfService.js'
-import { error } from '../utils/logger.js'
+import logger from '../utils/logger.js'
 
 /**
  * Sends a single payslip via email with PDF attachment.
@@ -68,7 +68,7 @@ const sendSinglePayslipEmail = async payslipId => {
 
     return { success: true, email: employee.email }
   } catch (error) {
-    error(`Error sending email to ${employee.email}:`, error.message)
+    logger.error(`Error sending email to ${employee.email}:`, error.message)
     payslip.emailStatus = 'Failed'
     payslip.emailError = error.message
     await payslip.save()

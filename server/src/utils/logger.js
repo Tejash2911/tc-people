@@ -1,11 +1,13 @@
+import { config } from '../config/env.js'
+
 const info = (...args) => {
-  if (process.env.NODE_ENV !== 'test') {
+  if (config.env !== 'development') {
     console.log('[INFO]', ...args)
   }
 }
 
 const warn = (...args) => {
-  if (process.env.NODE_ENV !== 'test') {
+  if (config.env !== 'development') {
     console.warn('[WARN]', ...args)
   }
 }
@@ -13,5 +15,5 @@ const warn = (...args) => {
 const error = (...args) => {
   console.error('[ERROR]', ...args)
 }
-
-export { info, warn, error }
+const logger = { info, warn, error }
+export default logger
