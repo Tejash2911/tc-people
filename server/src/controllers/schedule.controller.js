@@ -1,5 +1,4 @@
-import { WorkingSchedule } from '../models/working-schedule.model.js'
-import { calculateWeeklyHours } from '../services/schedule.service.js'
+import WorkingSchedule from '../models/working-schedule.model.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 

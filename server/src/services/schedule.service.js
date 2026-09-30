@@ -1,4 +1,24 @@
-import { calculateDayHours } from '../models/working-schedule.model.js'
+/**
+ * Calculates working hours for a single day based on start time, end time, and break.
+ *
+ * @param {Object} day - Day object with startTime, endTime, breakMinutes, and isWorkingDay
+ * @returns {number} - Hours worked for the day
+ */
+const calculateDayHours = day => {
+  if (!day || !day.isWorkingDay || !day.startTime || !day.endTime) return 0
+  try {
+    const [startH, startM] = (day.startTime || '09:00').split(':').map(Number)
+    const [endH, endM] = (day.endTime || '17:00').split(':').map(Number)
+    const startTotalMinutes = (startH || 0) * 60 + (startM || 0)
+    const endTotalMinutes = (endH || 0) * 60 + (endM || 0)
+
+    let workMinutes = endTotalMinutes - startTotalMinutes - (day.breakMinutes || 0)
+    if (workMinutes < 0) workMinutes = 0
+    return workMinutes / 60
+  } catch (e) {
+    return 0
+  }
+}
 
 /**
  * Calculates total weekly hours from schedule days.
@@ -57,4 +77,4 @@ const getExpectedScheduleHours = (schedule, startDate, endDate) => {
   }
 }
 
-export { calculateWeeklyHours, getExpectedScheduleHours }
+export { calculateDayHours, calculateWeeklyHours, getExpectedScheduleHours }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { calculateDayHours } from '../services/schedule.service.js'
 
 const scheduleDaySchema = new mongoose.Schema(
   {
@@ -64,22 +65,6 @@ const workingScheduleSchema = new mongoose.Schema(
   }
 )
 
-const calculateDayHours = day => {
-  if (!day || !day.isWorkingDay || !day.startTime || !day.endTime) return 0
-  try {
-    const [startH, startM] = (day.startTime || '09:00').split(':').map(Number)
-    const [endH, endM] = (day.endTime || '17:00').split(':').map(Number)
-    const startTotalMinutes = (startH || 0) * 60 + (startM || 0)
-    const endTotalMinutes = (endH || 0) * 60 + (endM || 0)
-
-    let workMinutes = endTotalMinutes - startTotalMinutes - (day.breakMinutes || 0)
-    if (workMinutes < 0) workMinutes = 0
-    return workMinutes / 60
-  } catch (e) {
-    return 0
-  }
-}
-
 // Pre-save hook to calculate totalWeeklyHours automatically
 workingScheduleSchema.pre('save', function (next) {
   if (this.days && this.days.length > 0) {
@@ -91,4 +76,4 @@ workingScheduleSchema.pre('save', function (next) {
 
 const WorkingSchedule = mongoose.model('WorkingSchedule', workingScheduleSchema)
 
-export { WorkingSchedule, calculateDayHours }
+export default WorkingSchedule
