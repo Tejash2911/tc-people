@@ -1,6 +1,6 @@
-import Payrun from '../models/Payrun.js'
-import { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } from '../services/payrunService.js'
-import { bulkSendPayrunPayslips } from '../services/emailService.js'
+import Payrun from '../models/payrun.model.js'
+import { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } from '../services/payrun.service.js'
+import { bulkSendPayrunPayslips } from '../services/email.service.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 

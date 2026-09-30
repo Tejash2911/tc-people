@@ -1,5 +1,5 @@
 import express from 'express'
-import { getPayslips, getPayslipById, getPayslipPDF, sendEmail } from '../controllers/payslipController.js'
+import { getPayslips, getPayslipById, getPayslipPDF, sendEmail } from '../controllers/payslip.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 

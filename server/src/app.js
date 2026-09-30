@@ -3,17 +3,17 @@ import cors from 'cors'
 import { errorHandler, AppError } from './middleware/errorMiddleware.js'
 
 // Route imports
-import authRoutes from './routes/authRoutes.js'
-import employeeRoutes from './routes/employeeRoutes.js'
-import contractRoutes from './routes/contractRoutes.js'
-import scheduleRoutes from './routes/scheduleRoutes.js'
-import attendanceRoutes from './routes/attendanceRoutes.js'
-import timeOffRoutes from './routes/timeOffRoutes.js'
-import salaryStructureRoutes from './routes/salaryStructureRoutes.js'
-import salaryRuleRoutes from './routes/salaryRuleRoutes.js'
-import payrunRoutes from './routes/payrunRoutes.js'
-import payslipRoutes from './routes/payslipRoutes.js'
-import dashboardRoutes from './routes/dashboardRoutes.js'
+import authRoutes from './routes/auth.route.js'
+import employeeRoutes from './routes/employee.route.js'
+import contractRoutes from './routes/contract.route.js'
+import scheduleRoutes from './routes/schedule.route.js'
+import attendanceRoutes from './routes/attendance.route.js'
+import timeOffRoutes from './routes/time-off.route.js'
+import salaryStructureRoutes from './routes/salary-structure.route.js'
+import salaryRuleRoutes from './routes/salary-rule.route.js'
+import payrunRoutes from './routes/payrun.route.js'
+import payslipRoutes from './routes/payslip.route.js'
+import dashboardRoutes from './routes/dashboard.route.js'
 
 const app = express()
 

@@ -1,6 +1,6 @@
-import Payslip from '../models/Payslip.js'
-import { generatePayslipPDF } from '../services/pdfService.js'
-import { sendSinglePayslipEmail } from '../services/emailService.js'
+import Payslip from '../models/payslip.model.js'
+import { generatePayslipPDF } from '../services/pdf.service.js'
+import { sendSinglePayslipEmail } from '../services/email.service.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 

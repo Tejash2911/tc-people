@@ -1,6 +1,6 @@
-import TimeOffRequest from '../models/TimeOffRequest.js'
-import LeaveAllocation from '../models/LeaveAllocation.js'
-import TimeOffType from '../models/TimeOffType.js'
+import TimeOffRequest from '../models/time-off-request.model.js'
+import LeaveAllocation from '../models/leave-allocation.model.js'
+import TimeOffType from '../models/time-off-type.model.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 import { withTransaction } from '../config/db.js'
 

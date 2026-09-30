@@ -1,7 +1,7 @@
-import SalaryStructure from '../models/SalaryStructure.js'
-import SalaryRule from '../models/SalaryRule.js'
+import SalaryStructure from '../models/salary-structure.model.js'
+import SalaryRule from '../models/salary-rule.model.js'
 import { evaluateFormula } from '../utils/mathEvaluator.js'
-import { getExpectedScheduleHours } from './scheduleService.js'
+import { getExpectedScheduleHours } from './schedule.service.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 
 /**

@@ -15,7 +15,7 @@ import {
   approveRequest,
   refuseRequest,
   getEmployeeLeaveBalance
-} from '../controllers/timeOffController.js'
+} from '../controllers/time-off.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 import { validate } from '../middleware/validateMiddleware.js'

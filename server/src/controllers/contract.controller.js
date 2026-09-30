@@ -1,9 +1,9 @@
-import Contract from '../models/Contract.js'
-import Payslip from '../models/Payslip.js'
-import { getApplicableContract, validateNoOverlappingContract } from '../services/contractService.js'
+import Contract from '../models/contract.model.js'
+import Payslip from '../models/payslip.model.js'
+import { getApplicableContract, validateNoOverlappingContract } from '../services/contract.service.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
-import { ensureEmployeeForUser } from '../services/employeeHelper.js'
+import { ensureEmployeeForUser } from '../services/employee-helper.service.js'
 
 /**
  * Get all contracts with filtering

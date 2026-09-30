@@ -1,8 +1,8 @@
 import { getTransporter } from '../config/mailer.js'
 import { config } from '../config/env.js'
-import Payslip from '../models/Payslip.js'
-import Payrun from '../models/Payrun.js'
-import { generatePayslipPDF } from './pdfService.js'
+import Payslip from '../models/payslip.model.js'
+import Payrun from '../models/payrun.model.js'
+import { generatePayslipPDF } from './pdf.service.js'
 import logger from '../utils/logger.js'
 
 /**

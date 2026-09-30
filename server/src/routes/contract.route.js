@@ -6,7 +6,7 @@ import {
   createContract,
   updateContract,
   deleteContract
-} from '../controllers/contractController.js'
+} from '../controllers/contract.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 import { validate } from '../middleware/validateMiddleware.js'

@@ -5,7 +5,7 @@ import {
   createSchedule,
   updateSchedule,
   deleteSchedule
-} from '../controllers/scheduleController.js'
+} from '../controllers/schedule.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 import { validate } from '../middleware/validateMiddleware.js'

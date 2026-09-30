@@ -1,5 +1,5 @@
-import Employee from '../models/Employee.js'
-import Contract from '../models/Contract.js'
+import Employee from '../models/employee.model.js'
+import Contract from '../models/contract.model.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 

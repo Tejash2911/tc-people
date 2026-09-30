@@ -6,7 +6,7 @@ import {
   updateAttendance,
   togglePunch,
   deleteAttendance
-} from '../controllers/attendanceController.js'
+} from '../controllers/attendance.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 import { validate } from '../middleware/validateMiddleware.js'

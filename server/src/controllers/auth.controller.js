@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
-import User from '../models/User.js'
-import Employee from '../models/Employee.js'
+import User from '../models/user.model.js'
+import Employee from '../models/employee.model.js'
 import { config } from '../config/env.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
-import { ensureEmployeeForUser } from '../services/employeeHelper.js'
+import { ensureEmployeeForUser } from '../services/employee-helper.service.js'
 
 const signToken = id => {
   return jwt.sign({ id }, config.jwtSecret, {

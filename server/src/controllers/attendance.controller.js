@@ -1,8 +1,8 @@
-import Attendance from '../models/Attendance.js'
-import Employee from '../models/Employee.js'
+import Attendance from '../models/attendance.model.js'
+import Employee from '../models/employee.model.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
-import { ensureEmployeeForUser } from '../services/employeeHelper.js'
+import { ensureEmployeeForUser } from '../services/employee-helper.service.js'
 
 /**
  * Normalizes date to UTC midnight matching calendar day (YYYY-MM-DD)

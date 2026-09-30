@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
-import Payslip from '../models/Payslip.js'
-import Payrun from '../models/Payrun.js'
-import Employee from '../models/Employee.js'
-import Attendance from '../models/Attendance.js'
-import TimeOffRequest from '../models/TimeOffRequest.js'
-import LeaveAllocation from '../models/LeaveAllocation.js'
-import Contract from '../models/Contract.js'
+import Payslip from '../models/payslip.model.js'
+import Payrun from '../models/payrun.model.js'
+import Employee from '../models/employee.model.js'
+import Attendance from '../models/attendance.model.js'
+import TimeOffRequest from '../models/time-off-request.model.js'
+import LeaveAllocation from '../models/leave-allocation.model.js'
+import Contract from '../models/contract.model.js'
 
 /**
  * Aggregates live payroll & HR dashboard metrics based on dynamic filters.

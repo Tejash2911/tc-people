@@ -1,7 +1,7 @@
-import Employee from '../models/Employee.js'
-import User from '../models/User.js'
-import TimeOffType from '../models/TimeOffType.js'
-import LeaveAllocation from '../models/LeaveAllocation.js'
+import Employee from '../models/employee.model.js'
+import User from '../models/user.model.js'
+import TimeOffType from '../models/time-off-type.model.js'
+import LeaveAllocation from '../models/leave-allocation.model.js'
 
 /**
  * Ensures an employee profile and statutory leave allocations exist for a user.

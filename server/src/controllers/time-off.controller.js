@@ -1,8 +1,8 @@
-import TimeOffType from '../models/TimeOffType.js'
-import LeaveAllocation from '../models/LeaveAllocation.js'
-import TimeOffRequest from '../models/TimeOffRequest.js'
-import { approveLeaveRequest, refuseLeaveRequest, getLeaveBalance } from '../services/leaveService.js'
-import { ensureEmployeeForUser } from '../services/employeeHelper.js'
+import TimeOffType from '../models/time-off-type.model.js'
+import LeaveAllocation from '../models/leave-allocation.model.js'
+import TimeOffRequest from '../models/time-off-request.model.js'
+import { approveLeaveRequest, refuseLeaveRequest, getLeaveBalance } from '../services/leave.service.js'
+import { ensureEmployeeForUser } from '../services/employee-helper.service.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 

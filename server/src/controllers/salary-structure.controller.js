@@ -1,5 +1,5 @@
-import SalaryStructure from '../models/SalaryStructure.js'
-import Contract from '../models/Contract.js'
+import SalaryStructure from '../models/salary-structure.model.js'
+import Contract from '../models/contract.model.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 

@@ -5,7 +5,7 @@ import {
   createSalaryRule,
   updateSalaryRule,
   deleteSalaryRule
-} from '../controllers/salaryRuleController.js'
+} from '../controllers/salary-rule.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 import { validate } from '../middleware/validateMiddleware.js'

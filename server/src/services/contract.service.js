@@ -1,4 +1,4 @@
-import Contract from '../models/Contract.js'
+import Contract from '../models/contract.model.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 
 /**

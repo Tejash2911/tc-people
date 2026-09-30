@@ -1,4 +1,4 @@
-import { calculateDayHours } from '../models/WorkingSchedule.js'
+import { calculateDayHours } from '../models/working-schedule.model.js'
 
 /**
  * Calculates total weekly hours from schedule days.

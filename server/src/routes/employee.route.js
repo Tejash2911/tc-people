@@ -5,7 +5,7 @@ import {
   createEmployee,
   updateEmployee,
   deleteEmployee
-} from '../controllers/employeeController.js'
+} from '../controllers/employee.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 import { validate } from '../middleware/validateMiddleware.js'

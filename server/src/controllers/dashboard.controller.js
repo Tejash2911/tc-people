@@ -1,4 +1,4 @@
-import { getPayrollDashboardMetrics } from '../services/dashboardService.js'
+import { getPayrollDashboardMetrics } from '../services/dashboard.service.js'
 import { successResponse } from '../utils/apiResponse.js'
 
 /**

@@ -1,5 +1,5 @@
 import express from 'express'
-import { getDashboardMetrics, getAttendanceOverview } from '../controllers/dashboardController.js'
+import { getDashboardMetrics, getAttendanceOverview } from '../controllers/dashboard.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 

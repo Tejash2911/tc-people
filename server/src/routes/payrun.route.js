@@ -9,7 +9,7 @@ import {
   validate as payrunValidate,
   markPaid,
   sendPayslips
-} from '../controllers/payrunController.js'
+} from '../controllers/payrun.controller.js'
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 import { validate } from '../middleware/validateMiddleware.js'

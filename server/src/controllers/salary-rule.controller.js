@@ -1,4 +1,4 @@
-import SalaryRule from '../models/SalaryRule.js'
+import SalaryRule from '../models/salary-rule.model.js'
 import { successResponse } from '../utils/apiResponse.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 

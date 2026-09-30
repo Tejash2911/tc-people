@@ -1,5 +1,5 @@
 import PDFDocument from 'pdfkit'
-import Payslip from '../models/Payslip.js'
+import Payslip from '../models/payslip.model.js'
 import { AppError } from '../middleware/errorMiddleware.js'
 
 /**
