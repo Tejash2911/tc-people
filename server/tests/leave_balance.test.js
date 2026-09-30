@@ -1,10 +1,10 @@
 import './setup.js'
-import Employee from '../src/models/Employee.js'
-import TimeOffType from '../src/models/TimeOffType.js'
-import LeaveAllocation from '../src/models/LeaveAllocation.js'
-import TimeOffRequest from '../src/models/TimeOffRequest.js'
-import User from '../src/models/User.js'
-import { approveLeaveRequest, getLeaveBalance } from '../src/services/leaveService.js'
+import Employee from '../src/models/employee.model.js'
+import TimeOffType from '../src/models/time-off-type.model.js'
+import LeaveAllocation from '../src/models/leave-allocation.model.js'
+import TimeOffRequest from '../src/models/time-off-request.model.js'
+import User from '../src/models/user.model.js'
+import { approveLeaveRequest, getLeaveBalance } from '../src/services/leave.service.js'
 
 describe('3. Time Off, Leave Allocation & Auto Balance Deduction Tests', () => {
   it('should approve leave request and automatically consume leave allocation balance', async () => {

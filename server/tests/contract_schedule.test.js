@@ -1,10 +1,10 @@
 import './setup.js'
-import { WorkingSchedule } from '../src/models/WorkingSchedule.js'
-import Employee from '../src/models/Employee.js'
-import Contract from '../src/models/Contract.js'
-import SalaryStructure from '../src/models/SalaryStructure.js'
-import { calculateWeeklyHours } from '../src/services/scheduleService.js'
-import { getApplicableContract, validateNoOverlappingContract } from '../src/services/contractService.js'
+import WorkingSchedule from '../src/models/working-schedule.model.js'
+import Employee from '../src/models/employee.model.js'
+import Contract from '../src/models/contract.model.js'
+import SalaryStructure from '../src/models/salary-structure.model.js'
+import { calculateWeeklyHours } from '../src/services/schedule.service.js'
+import { getApplicableContract, validateNoOverlappingContract } from '../src/services/contract.service.js'
 
 describe('2. Working Schedule & Contract Management Tests', () => {
   it('should automatically calculate total weekly hours from schedule days', async () => {

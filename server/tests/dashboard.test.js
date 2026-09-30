@@ -1,10 +1,10 @@
 import './setup.js'
-import Employee from '../src/models/Employee.js'
-import Attendance from '../src/models/Attendance.js'
-import TimeOffRequest from '../src/models/TimeOffRequest.js'
-import TimeOffType from '../src/models/TimeOffType.js'
-import Payslip from '../src/models/Payslip.js'
-import { getPayrollDashboardMetrics } from '../src/services/dashboardService.js'
+import Employee from '../src/models/employee.model.js'
+import Attendance from '../src/models/attendance.model.js'
+import TimeOffRequest from '../src/models/time-off-request.model.js'
+import TimeOffType from '../src/models/time-off-type.model.js'
+import Payslip from '../src/models/payslip.model.js'
+import { getPayrollDashboardMetrics } from '../src/services/dashboard.service.js'
 import mongoose from 'mongoose'
 
 describe('6. Live Database Dashboard & Reporting Engine Tests', () => {

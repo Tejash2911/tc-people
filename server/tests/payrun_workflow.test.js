@@ -1,12 +1,12 @@
 import './setup.js'
-import Employee from '../src/models/Employee.js'
-import Contract from '../src/models/Contract.js'
-import SalaryRule from '../src/models/SalaryRule.js'
-import SalaryStructure from '../src/models/SalaryStructure.js'
-import Payrun from '../src/models/Payrun.js'
-import Payslip from '../src/models/Payslip.js'
-import User from '../src/models/User.js'
-import { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } from '../src/services/payrunService.js'
+import Employee from '../src/models/employee.model.js'
+import Contract from '../src/models/contract.model.js'
+import SalaryRule from '../src/models/salary-rule.model.js'
+import SalaryStructure from '../src/models/salary-structure.model.js'
+import Payrun from '../src/models/payrun.model.js'
+import Payslip from '../src/models/payslip.model.js'
+import User from '../src/models/user.model.js'
+import { getEligibleEmployees, computePayrun, validatePayrun, markPayrunPaid } from '../src/services/payrun.service.js'
 
 describe('5. Payrun Processing & Duplicate Payslip Protection Tests', () => {
   let employee1, employee2, structure, adminUser
