@@ -37,6 +37,6 @@ const salaryStructureSchema = new mongoose.Schema(
   }
 )
 
-const SalaryStructure = mongoose.model('SalaryStructure', salaryStructureSchema)
+const SalaryStructure = mongoose.models.SalaryStructure || mongoose.model('SalaryStructure', salaryStructureSchema)
 
 export default SalaryStructure

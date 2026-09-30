@@ -69,6 +69,6 @@ const salaryRuleSchema = new mongoose.Schema(
   }
 )
 
-const SalaryRule = mongoose.model('SalaryRule', salaryRuleSchema)
+const SalaryRule = mongoose.models.SalaryRule || mongoose.model('SalaryRule', salaryRuleSchema)
 
 export default SalaryRule

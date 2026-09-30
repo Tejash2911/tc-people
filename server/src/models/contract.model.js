@@ -67,6 +67,6 @@ const contractSchema = new mongoose.Schema(
 // Compound index for querying employee contracts by start and end dates
 contractSchema.index({ employee: 1, startDate: 1, endDate: 1, status: 1 })
 
-const Contract = mongoose.model('Contract', contractSchema)
+const Contract = mongoose.models.Contract || mongoose.model('Contract', contractSchema)
 
 export default Contract

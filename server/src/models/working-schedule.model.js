@@ -74,6 +74,6 @@ workingScheduleSchema.pre('save', function (next) {
   next()
 })
 
-const WorkingSchedule = mongoose.model('WorkingSchedule', workingScheduleSchema)
+const WorkingSchedule = mongoose.models.WorkingSchedule || mongoose.model('WorkingSchedule', workingScheduleSchema)
 
 export default WorkingSchedule

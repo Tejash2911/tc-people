@@ -134,6 +134,6 @@ const payslipSchema = new mongoose.Schema(
 // Prevent duplicate active payslips for same employee & payroll period
 payslipSchema.index({ employee: 1, 'payrollPeriod.start': 1, 'payrollPeriod.end': 1 }, { unique: true })
 
-const Payslip = mongoose.model('Payslip', payslipSchema)
+const Payslip = mongoose.models.Payslip || mongoose.model('Payslip', payslipSchema)
 
 export default Payslip

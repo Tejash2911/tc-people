@@ -85,6 +85,6 @@ const payrunSchema = new mongoose.Schema(
 
 payrunSchema.index({ periodStart: 1, periodEnd: 1, status: 1 })
 
-const Payrun = mongoose.model('Payrun', payrunSchema)
+const Payrun = mongoose.models.Payrun || mongoose.model('Payrun', payrunSchema)
 
 export default Payrun

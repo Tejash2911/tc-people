@@ -48,6 +48,6 @@ const timeOffTypeSchema = new mongoose.Schema(
   }
 )
 
-const TimeOffType = mongoose.model('TimeOffType', timeOffTypeSchema)
+const TimeOffType = mongoose.models.TimeOffType || mongoose.model('TimeOffType', timeOffTypeSchema)
 
 export default TimeOffType

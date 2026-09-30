@@ -65,6 +65,6 @@ timeOffRequestSchema.index({
   status: 1
 })
 
-const TimeOffRequest = mongoose.model('TimeOffRequest', timeOffRequestSchema)
+const TimeOffRequest = mongoose.models.TimeOffRequest || mongoose.model('TimeOffRequest', timeOffRequestSchema)
 
 export default TimeOffRequest

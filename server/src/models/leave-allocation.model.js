@@ -62,6 +62,6 @@ leaveAllocationSchema.pre('save', function (next) {
   next()
 })
 
-const LeaveAllocation = mongoose.model('LeaveAllocation', leaveAllocationSchema)
+const LeaveAllocation = mongoose.models.LeaveAllocation || mongoose.model('LeaveAllocation', leaveAllocationSchema)
 
 export default LeaveAllocation
