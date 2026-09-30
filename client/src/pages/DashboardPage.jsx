@@ -236,7 +236,7 @@ export const DashboardPage = () => {
     const isClockedIn = !!(employeeData.attendanceToday && !employeeData.attendanceToday.checkOut)
 
     return (
-      <div className='p-5 max-w-[1400px] w-full mx-auto flex flex-col gap-6 font-body'>
+      <div className='p-5 w-full flex flex-col gap-6 font-body'>
         {/* Welcome Header */}
         <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#E7E2D9]'>
           <div>
@@ -747,7 +747,7 @@ export const DashboardPage = () => {
   const pendingAttentionCount = (leave?.pending || 0) + (alerts?.missingBankInfoEmployees || 0)
 
   return (
-    <div className='p-5 max-w-[1600px] w-full mx-auto flex flex-col gap-5 font-body'>
+    <div className='p-5 w-full flex flex-col gap-5 font-body'>
       {/* 1. Operations Context Header */}
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#E7E2D9]'>
         <div>

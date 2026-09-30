@@ -156,7 +156,7 @@ export const SettingsPage = () => {
   ]
 
   return (
-    <div className='p-6 max-w-[1600px] w-full mx-auto flex flex-col gap-6 font-body text-[#1C1B19]'>
+    <div className='p-6 w-full flex flex-col gap-6 font-body text-[#1C1B19]'>
       {/* 1. Header */}
       <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E7E2D9]'>
         <div>

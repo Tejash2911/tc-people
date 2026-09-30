@@ -236,7 +236,7 @@ export const PayrunDetailPage = () => {
   else if (isComputed) activeStep = 3
 
   return (
-    <div className='p-5 max-w-[1600px] w-full mx-auto flex flex-col gap-5 font-body'>
+    <div className='p-5 w-full flex flex-col gap-5 font-body'>
       {/* Breadcrumb & Batch Header */}
       <div className='flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#E7E2D9]'>
         <div>

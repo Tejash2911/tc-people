@@ -124,7 +124,7 @@ export const SalaryRulesPage = () => {
   const canManage = hasRole('Admin', 'HR Payroll Manager')
 
   return (
-    <div className='p-5 max-w-[1600px] w-full mx-auto flex flex-col gap-5 font-body'>
+    <div className='p-5 w-full flex flex-col gap-5 font-body'>
       {/* Top Header */}
       <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E7E2D9]'>
         <div>

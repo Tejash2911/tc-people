@@ -15,7 +15,9 @@ export const Layout = () => {
       <div className={`flex-1 flex flex-col min-h-screen transition-all duration-150 ${collapsed ? 'pl-16' : 'pl-60'}`}>
         <Header collapsed={collapsed} />
         <main className='flex-1 pt-12 bg-[#F7F5F1] min-h-screen'>
-          <Outlet />
+          <div className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8'>
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
