@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from '../../context/ToastContext'
 import { timeOffApi } from '../../api/timeOffApi'
@@ -197,9 +197,7 @@ export const NotificationDrawer = ({ isOpen, onClose, onUnreadCountChange }) => 
       </div>
 
       <div className='pt-2 border-t border-[#E7E2D9] flex justify-between items-center text-xs text-[#6B665C]'>
-        <button onClick={onClose} className='hover:text-[#1C1B19]'>
-          Close
-        </button>
+        <button onClick={onClose}>Close</button>
         <span className='font-mono text-[10px]'>TC People</span>
       </div>
     </div>

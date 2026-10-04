@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { payrunApi } from '../api/payrunApi'
 import { payslipApi } from '../api/payslipApi'

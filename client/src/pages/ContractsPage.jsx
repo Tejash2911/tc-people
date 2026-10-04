@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { contractApi } from '../api/contractApi'
 import { employeeApi } from '../api/employeeApi'
 import { salaryStructureApi } from '../api/salaryStructureApi'

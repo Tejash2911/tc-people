@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { scheduleApi } from '../api/scheduleApi'
 import { Badge } from '../components/common/Badge'
 import { Button } from '../components/common/Button'

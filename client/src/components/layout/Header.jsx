@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { GlobalSearchModal } from '../common/GlobalSearchModal'
@@ -68,7 +68,7 @@ export const Header = ({ collapsed }) => {
         {/* Left Interactive Breadcrumbs & Command Palette Trigger */}
         <div className='flex items-center gap-4 flex-1 max-w-lg'>
           {/* Breadcrumbs */}
-          <nav className='flex items-center gap-1.5 text-xs hidden md:flex shrink-0'>
+          <nav className='items-center gap-1.5 text-xs hidden md:flex shrink-0'>
             <Link to='/' className='text-[#6B665C] hover:text-[#1C1B19] transition-colors' title='Overview'>
               <span className='material-symbols-outlined text-[16px]'>grid_view</span>
             </Link>

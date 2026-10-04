@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Button } from '../components/common/Button'
@@ -117,20 +117,12 @@ export const LandingPage = () => {
 
         {/* Primary Call to Action */}
         <div className='flex flex-col sm:flex-row items-center gap-3 mt-2'>
-          <Button
-            variant='primary'
-            size='lg'
-            onClick={() => navigate('/login')}
-            className='px-6 py-2.5 font-medium text-sm shadow-sm'
-          >
+          <Button variant='primary' size='lg' onClick={() => navigate('/login')}>
             Open Payroll Workspace
           </Button>
-          <button
-            onClick={() => navigate('/login')}
-            className='px-5 py-2.5 rounded-md bg-white hover:bg-[#FAF9F6] text-[#1C1B19] border border-[#E7E2D9] text-xs font-medium transition-colors shadow-sm'
-          >
+          <Button variant='secondary' size='lg' onClick={() => navigate('/login')}>
             Register Organization Account
-          </button>
+          </Button>
         </div>
       </section>
 

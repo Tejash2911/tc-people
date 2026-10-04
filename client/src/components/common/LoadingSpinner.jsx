@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const LoadingSpinner = ({ message = 'Loading workforce data...' }) => {
   return (
     <div className='flex flex-col items-center justify-center p-12 w-full gap-3 text-[#A6A3A0]'>

@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const Badge = ({ children, variant = 'default', size = 'sm', icon = null, className = '' }) => {
   const variantStyles = {
     default: 'bg-[#F0ECE1] text-[#6B665C] border border-[#E7E2D9]',

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-2xl' }) => {
   useEffect(() => {
@@ -23,10 +23,7 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-2xl'
         {/* Header */}
         <div className='px-5 py-3.5 bg-[#FAF9F6] border-b border-[#E7E2D9] flex items-center justify-between'>
           <h3 className='text-base font-semibold text-[#1C1B19] font-heading'>{title}</h3>
-          <button
-            onClick={onClose}
-            className='p-1 rounded text-[#6B665C] hover:bg-[#F0ECE1] hover:text-[#1C1B19] transition-colors'
-          >
+          <button onClick={onClose}>
             <span className='material-symbols-outlined text-base'>close</span>
           </button>
         </div>
